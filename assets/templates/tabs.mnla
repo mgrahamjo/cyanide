@@ -1,6 +1,6 @@
 <<tabs.forEach(tab => {>>
 
-	<div class="tab <<tab.class>>" data-path="<<tab.path>>">
+	<div class="tab file <<tab.class>>" data-path="<<tab.path>>">
 		<<tab.name>>
 		<a class="close"/></a>
 	</div>

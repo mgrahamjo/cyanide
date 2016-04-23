@@ -7,7 +7,7 @@ export function module(modules) {
 
 		el = $(el);
 
-		let component = el.data('component'),
+		let component = modules[el.data('component')],
 
 			events = el.data('events');
 		
@@ -19,11 +19,11 @@ export function module(modules) {
 
 			}
 
-			modules[ component ].notify = (...args) => {
+			component.notify = (...args) => {
 
-				if (modules[ component ].listen) {
+				if (component.listen) {
 
-					modules[ component ].listen.apply(modules[ component ], [resolve, ...args]);
+					component.listen.apply(component, [resolve, ...args]);
 
 				}
 
@@ -33,15 +33,15 @@ export function module(modules) {
 
 				el.on(events, e => {
 					
-					modules[ component ].onEvent( resolve, $(e.target), e );
+					component.onEvent( resolve, $(e.target), e );
 
 				});
 
 			}
 
-			if (modules[ component ].init) {
+			if (component.init) {
 
-				modules[ component ].init( resolve );
+				component.init( resolve );
 
 			}
 

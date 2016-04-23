@@ -43,9 +43,7 @@ function keydown(e) {
 
 function keyup(e) {
 
-	let code = e.keyCode || e.which;
-
-	delete pressed[code];
+	delete pressed[e.keyCode || e.which];
 
 }
 

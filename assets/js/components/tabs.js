@@ -26,6 +26,10 @@ const tabs = {
 
 			render({ tabs: tabList });
 
+		} else {
+
+			nav.notify(el);
+
 		}
 
 	},
