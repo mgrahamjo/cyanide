@@ -1,0 +1,7 @@
+<<dirs.forEach(dir => {>>
+	<div class="nav dir" data-path="<<dir.path>>"><<dir.name>></div>
+<<})>>
+
+<<files.forEach(file => {>>
+	<div class="nav file" data-path="<<file.path>>"><<file.name>></div>
+<<})>>

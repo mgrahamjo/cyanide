@@ -1,0 +1,4 @@
+node_modules
+assets/js/dist
+data
+config*

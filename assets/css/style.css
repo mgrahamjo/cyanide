@@ -1,0 +1,132 @@
+body {
+  background-color: #27262D;
+  color: #C8D4E0;
+  margin: 0;
+  font-family: 'Inconsolata', 'monospace';
+  font-size: 10pt;
+}
+
+nav {
+  background-color: #2B2B33;
+    width: 20%;
+    position: fixed;
+    height: 100%;
+    padding: 10px 0;
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+.nav {
+  padding: 4px 15px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.file.open {
+    color: #DAA371;
+}
+
+.file.active {
+    color: #FF9B40;
+}
+
+.children {
+  display: none;
+}
+
+.open + .children {
+  display: block;
+  margin-left: 10px;
+}
+
+.nav:not(.open):hover {
+  color: white;
+}
+
+.background {
+    position: absolute;
+    left: calc(20% - 20px);
+    min-height: 100%;
+    background-color: #27262D;
+    width: calc(80% + 20px);
+    transition: -webkit-filter 0.3s, filter 0.3s;
+}
+
+.background.blur {
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+    pointer-events: none;
+}
+
+.text {
+    line-height: 1.5;
+    white-space: pre;
+    outline: none;
+    background: none;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    resize: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    width: calc(100% - 29px);
+    position: absolute;
+    padding: 0;
+    height: 1.5em;
+}
+
+.numbers {
+    float: left;
+    color: #5E5F75;
+    width: 25px;
+    text-align: center;
+    line-height: 1.5;
+    overflow: hidden;
+}
+
+.dir:after {
+    content: '/';
+}
+
+.tabs {
+    width: 100%;
+    background-color: #212127;
+    height: 35px;
+}
+
+.tab {
+    padding: 9px 10px 9px 15px;
+    border-bottom: 2px solid #C8976A;
+    box-shadow: 1px 0px 1px black;
+    display: inline-block;
+    transition: background-color 0.3s, border-bottom 0.3s;
+    cursor: pointer;
+}
+
+.tab:hover {
+    background-color: #27262D;
+}
+
+.tab.active {
+    border-bottom: 2px solid #FF9B40;
+    background-color: #27262D;
+}
+
+.close {
+    margin-left: 6px;
+    position: relative;
+    top: 2px;
+    font-size: 14pt;
+    line-height: 0;
+    color: #50545C;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #C8D4E0;
+}
+
+.close:after {
+    content: "\00d7";
+}
