@@ -1,29 +1,29 @@
-import { $ } from './$';
-
 export function save() {
 
-	$('.background').addClass('blur');
+	let bg = document.querySelector('.background');
+
+	bg.classList.add('blur');
 
 	$.post(
 
-		'/save?file=' + $('.file.active').data('path'),
+		'/save?file=' + document.querySelector('.file.active').getAttribute('data-path'),
 
 		{
-			data: $('.text').val(),
+			data: document.querySelector('.text').value,
 			token: window.token
 		},
 
 		result => {
 
-			if (result.data !== undefined) {
+			window.token = result.token;
 
-				window.token = result.data.token;
+			if (result.error) {
 			
-				$('.background').removeClass('blur');
+				console.error(result.error);
 			
 			} else {
 
-				console.error(result);
+				bg.classList.remove('blur');
 
 			}
 

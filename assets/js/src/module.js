@@ -1,21 +1,18 @@
-import { $ } from './$';
 import { compile } from './compile';
 
 export function module(modules) {
 
-	$('[data-component]').each(el => {
+	[ ...document.querySelectorAll('[data-component]')].forEach(el => {
 
-		el = $(el);
+		let component = modules[el.getAttribute('data-component')],
 
-		let component = modules[el.data('component')],
-
-			events = el.data('events');
+			events = el.getAttribute('data-events');
 		
-		compile( el.data('template') ).then(render => {
+		compile( el.getAttribute('data-template') ).then(render => {
 
 			function resolve(data, target = el) {
 
-				target.html(render(data));
+				target.innerHTML = render(data);
 
 			}
 
@@ -30,10 +27,10 @@ export function module(modules) {
 			};
 
 			if (events) {
-
-				el.on(events, e => {
+				// this only supports one event right now
+				el.addEventListener(events, e => {
 					
-					component.onEvent( resolve, $(e.target), e );
+					component.onEvent( resolve, e.target, e );
 
 				});
 

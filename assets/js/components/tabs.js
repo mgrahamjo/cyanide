@@ -1,4 +1,3 @@
-import { $ } from '../src/$';
 import text from './text';
 import nav from './nav';
 
@@ -8,11 +7,15 @@ const tabs = {
 
 	onEvent: (render, el) => {
 
-		if (el.is('.close')) {
+		if (el.classList.contains('close')) {
 
-			let path = el.parent().data('path');
+			let path = el.parentNode.getAttribute('data-path');
 
-			$(`.file[data-path="${path}"]`).removeClass('open active');
+			[...document.querySelectorAll(`.file[data-path="${path}"]`)].forEach(elem => {
+				
+				elem.classList.remove('open', 'active');
+
+			});
 
 			tabList = tabList.filter(tab => {
 
@@ -22,7 +25,7 @@ const tabs = {
 
 			text.notify('');
 
-			nav.notify($('.file.open').last());
+			nav.notify(document.querySelector('.file.open'));
 
 			render({ tabs: tabList });
 

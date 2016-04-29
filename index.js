@@ -81,8 +81,6 @@ breadbox({
         '/open': require('./controllers/open'),
         '/save': require('./controllers/save')
 
-    },
-
-    sessionLength: 3600000
+    }
 
 });

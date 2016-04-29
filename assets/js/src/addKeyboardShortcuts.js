@@ -1,5 +1,4 @@
 import { save } from './save';
-import { $ } from './$';
 
 const keymap = {
 

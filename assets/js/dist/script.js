@@ -29,14 +29,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _addKeyboardShortcuts.addKeyboardShortcuts)();
 
-},{"./components/nav":2,"./components/tabs":3,"./components/text":4,"./src/addKeyboardShortcuts":6,"./src/module":9}],2:[function(require,module,exports){
+},{"./components/nav":2,"./components/tabs":3,"./components/text":4,"./src/addKeyboardShortcuts":5,"./src/module":8}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _$ = require('../src/$');
 
 var _tabs = require('./tabs');
 
@@ -48,40 +46,47 @@ var _text2 = _interopRequireDefault(_text);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function onEvent(render, el) {
 
-	if (el.length) {
+	if (el) {
+		(function () {
 
-		var target = void 0,
-		    path = el.data('path');
+			var target = void 0,
+			    path = el.getAttribute('data-path');
 
-		el.toggleClass('open');
+			el.classList.toggle('open');
 
-		(0, _$.$)('.file.active').removeClass('active');
+			if (el.classList.contains('dir') && (!el.nextElementSibling || !el.nextElementSibling.classList.contains('children'))) {
 
-		el.addClass('active');
+				$.get('/nav?dir=' + path, function (data) {
 
-		if (el.hasClass('dir') && el.next('.children').length === 0) {
+					window.token = data.token;
 
-			_$.$.get('/nav?dir=' + path, function (data) {
+					el.outerHTML += '<div class="children"/>';
 
-				window.token = data.token;
+					render(data, document.querySelector('[data-path="' + path + '"] + .children'));
+				});
+			} else if (el.classList.contains('file')) {
 
-				el.after('<div class="children"/>');
+				[].concat(_toConsumableArray(document.querySelectorAll('.file.active'))).forEach(function (e) {
 
-				render(data, (0, _$.$)('[data-path="' + el.data('path') + '"] + .children'));
-			});
-		} else if (el.hasClass('file')) {
+					e.classList.remove('active');
+				});
 
-			_$.$.get('/open?file=' + path, function (data) {
+				el.classList.add('active');
 
-				window.token = data.token;
+				$.get('/open?file=' + path, function (data) {
 
-				_text2.default.notify(data.data);
-			});
+					window.token = data.token;
 
-			_tabs2.default.notify(path, el.html());
-		}
+					_text2.default.notify(data.data);
+				});
+
+				_tabs2.default.notify(path, el.innerHTML);
+			}
+		})();
 	}
 }
 
@@ -89,7 +94,7 @@ var nav = {
 
 	init: function init(render) {
 
-		_$.$.get('/nav', function (data) {
+		$.get('/nav', function (data) {
 
 			window.token = data.token;
 
@@ -105,14 +110,12 @@ var nav = {
 
 exports.default = nav;
 
-},{"../src/$":5,"./tabs":3,"./text":4}],3:[function(require,module,exports){
+},{"./tabs":3,"./text":4}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _$ = require('../src/$');
 
 var _text = require('./text');
 
@@ -124,18 +127,23 @@ var _nav2 = _interopRequireDefault(_nav);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var tabList = [];
 
 var tabs = {
 
 	onEvent: function onEvent(render, el) {
 
-		if (el.is('.close')) {
+		if (el.classList.contains('close')) {
 			(function () {
 
-				var path = el.parent().data('path');
+				var path = el.parentNode.getAttribute('data-path');
 
-				(0, _$.$)('.file[data-path="' + path + '"]').removeClass('open active');
+				[].concat(_toConsumableArray(document.querySelectorAll('.file[data-path="' + path + '"]'))).forEach(function (elem) {
+
+					elem.classList.remove('open', 'active');
+				});
 
 				tabList = tabList.filter(function (tab) {
 
@@ -144,7 +152,7 @@ var tabs = {
 
 				_text2.default.notify('');
 
-				_nav2.default.notify((0, _$.$)('.file.open').last());
+				_nav2.default.notify(document.querySelector('.file.open'));
 
 				render({ tabs: tabList });
 			})();
@@ -187,42 +195,39 @@ var tabs = {
 
 exports.default = tabs;
 
-},{"../src/$":5,"./nav":2,"./text":4}],4:[function(require,module,exports){
+},{"./nav":2,"./text":4}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-
-var _$ = require('../src/$');
-
 var i = 1,
-    el = (0, _$.$)('.text'),
-    numbers = (0, _$.$)('.numbers');
+    el = document.querySelector('.text'),
+    numbers = document.querySelector('.numbers');
 
 function resetHeight() {
 
 	var height = void 0;
 
-	el.height('');
+	el.style.height = '';
 
-	numbers.height('');
+	numbers.style.height = '';
 
-	height = el.scrollHeight();
+	height = el.scrollHeight;
 
-	el.height(height);
+	el.style.height = height + 'px';
 
-	if (numbers.height() < height) {
+	if (numbers.clientHeight < height) {
 
-		while (numbers.height() < height) {
+		while (numbers.clientHeight < height) {
 
-			numbers.append(i + '<br>');
+			numbers.innerHTML += i + '<br>';
 
 			i++;
 		}
 	} else {
 
-		numbers.height(height);
+		numbers.style.height = height + 'px';
 	}
 }
 
@@ -232,7 +237,7 @@ var text = {
 
 	listen: function listen(render, data) {
 
-		el.val(data);
+		el.value = data;
 
 		resetHeight();
 	}
@@ -241,428 +246,7 @@ var text = {
 
 exports.default = text;
 
-},{"../src/$":5}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-// Splits a string into an array on whitespace
-function split(str) {
-	return str ? str.replace(/\s+/, ' ').split(' ') : [];
-}
-
-// Adds classes to an element if they don't already exist
-function _addClass(el, classList) {
-
-	var classes = split(el.className);
-
-	classList.forEach(function (klass) {
-
-		if (classes.indexOf(klass) === -1) {
-
-			classes.push(klass);
-		}
-	});
-
-	el.className = classes.join(' ');
-}
-
-// Removes classes from an element if they exist
-function _removeClass(el, classList) {
-
-	var classes = split(el.className);
-
-	classList.forEach(function (klass) {
-
-		var i = classes.indexOf(klass);
-
-		if (i !== -1) {
-
-			classes.splice(i, 1);
-		}
-	});
-
-	el.className = classes.join(' ');
-}
-
-// Accepts a CSS selector and returns an array of DOM nodes
-var get = function get(selector) {
-
-	return selector ? [].concat(_toConsumableArray(document.querySelectorAll(selector))) : [];
-};
-
-function $(selector) {
-
-	var els = typeof selector === 'string' ? get(selector) : [selector],
-	    methods = {
-
-		addClass: function addClass(classList) {
-
-			els.forEach(function (el) {
-
-				_addClass(el, split(classList));
-			});
-
-			return methods;
-		},
-
-		removeClass: function removeClass(classList) {
-
-			els.forEach(function (el) {
-
-				_removeClass(el, split(classList));
-			});
-
-			return methods;
-		},
-
-		toggleClass: function toggleClass(klass) {
-
-			els.forEach(function (el) {
-
-				el.classList.toggle(klass);
-			});
-		},
-
-		hasClass: function hasClass(klass) {
-
-			return els[0].classList.contains(klass);
-		},
-
-		html: function html(content) {
-
-			if (content !== undefined) {
-
-				els.forEach(function (el) {
-
-					el.innerHTML = content;
-				});
-			} else {
-
-				return els[0].innerHTML;
-			}
-
-			return methods;
-		},
-
-		empty: function empty() {
-
-			methods.html('');
-
-			return methods;
-		},
-
-		val: function val(_val) {
-
-			if (_val !== undefined) {
-
-				els.forEach(function (el) {
-
-					el.value = _val;
-				});
-			} else {
-
-				return els[0].value;
-			}
-
-			return methods;
-		},
-
-		attr: function attr(name, value) {
-
-			if (value) {
-
-				els.forEach(function (el) {
-
-					el.setAttribute(name, value);
-				});
-			} else {
-
-				return els[0].getAttribute(name);
-			}
-
-			return methods;
-		},
-
-		trigger: function trigger(events) {
-
-			split(events).forEach(function (event) {
-
-				event = new Event(event);
-
-				els.forEach(function (el) {
-
-					el.dispatchEvent(event);
-				});
-			});
-		},
-
-		on: function on(event, childSelector, fn) {
-
-			var delegate = typeof childSelector === 'string';
-
-			if (delegate) {
-
-				els.forEach(function (el) {
-
-					split(event).forEach(function (e) {
-
-						el.addEventListener(e, function (ev) {
-
-							if (ev.target.matches(childSelector)) {
-
-								fn(ev);
-							}
-						});
-					});
-				});
-			} else {
-
-				fn = childSelector;
-
-				els.forEach(function (el) {
-
-					split(event).forEach(function (e) {
-
-						el.addEventListener(e, fn);
-					});
-				});
-			}
-
-			return methods;
-		},
-
-		off: function off(event, fn) {
-
-			if (fn) {
-
-				els.forEach(function (el) {
-
-					el.removeEventListener(event, fn);
-				});
-			}
-
-			return methods;
-		},
-
-		height: function height(px) {
-
-			if (px === undefined) {
-
-				return els[0].clientHeight;
-			} else {
-
-				if (typeof px !== 'string') {
-
-					px += 'px';
-				}
-
-				els.forEach(function (el) {
-
-					el.style.height = px;
-				});
-			}
-
-			return methods;
-		},
-
-		scrollHeight: function scrollHeight() {
-
-			return els[0].scrollHeight;
-		},
-
-		append: function append(html) {
-
-			els.forEach(function (el) {
-
-				el.innerHTML += html;
-			});
-		},
-
-		after: function after(html) {
-
-			els.forEach(function (el) {
-
-				el.outerHTML += html;
-			});
-		},
-
-		parent: function parent(parentSelector) {
-
-			var parent = els[0].parentNode;
-
-			if (parentSelector) {
-
-				if (parent.matches(parentSelector)) {
-
-					return $(parent);
-				}
-			} else {
-
-				return $(parent);
-			}
-
-			return $('');
-		},
-
-		next: function next(nextSelector) {
-
-			var next = els[0].nextElementSibling || '';
-
-			if (nextSelector && next) {
-
-				if (next.matches(nextSelector)) {
-
-					return $(next);
-				}
-			} else {
-
-				return $(next);
-			}
-
-			return $('');
-		},
-
-		prev: function prev(prevSelector) {
-
-			var prev = els[0].previousElementSibling;
-
-			if (prevSelector) {
-
-				if (prev.matches(prevSelector)) {
-
-					return $(prev);
-				}
-			} else {
-
-				return $(prev);
-			}
-
-			return $('');
-		},
-
-		is: function is(selector) {
-
-			return els[0].matches(selector);
-		},
-
-		data: function data(key) {
-
-			return methods.attr('data-' + key);
-		},
-
-		remove: function remove() {
-
-			els.forEach(function (el) {
-
-				el.outerHTML = '';
-			});
-		},
-
-		first: function first() {
-
-			return $(els[0]);
-		},
-
-		last: function last() {
-
-			return $(els[els.length - 1] || '');
-		},
-
-		each: function each(callback) {
-
-			els.forEach(callback);
-		},
-
-		length: els.length
-
-	};
-
-	return methods;
-}
-
-function serialize(data) {
-
-	var parts = [];
-
-	Object.keys(data).forEach(function (key) {
-
-		parts.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
-	});
-
-	return parts.join('&');
-}
-
-$.get = function (path, data, callback) {
-
-	var req = new XMLHttpRequest();
-
-	if (typeof data === 'function') {
-
-		callback = data;
-
-		data = {};
-	}
-
-	req.onreadystatechange = function () {
-
-		if (req.readyState == 4 && req.status == 200) {
-
-			var result = void 0;
-
-			try {
-
-				result = JSON.parse(req.responseText);
-			} catch (err) {
-
-				result = req.responseText;
-			}
-
-			callback(result);
-		}
-	};
-
-	req.open('GET', path);
-
-	req.send(serialize(data));
-};
-
-$.post = function (path, data, callback) {
-
-	var req = new XMLHttpRequest();
-
-	req.onreadystatechange = function () {
-
-		if (req.readyState == 4 && req.status == 200) {
-
-			var json = JSON.parse(req.responseText);
-
-			if (json) {
-
-				callback(json);
-			} else {
-
-				callback(req.responseText);
-			}
-		}
-	};
-
-	req.open('POST', path);
-
-	req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-	req.send(serialize(data));
-};
-
-window.$ = $;
-
-exports.$ = $;
-
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -671,8 +255,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.addKeyboardShortcuts = addKeyboardShortcuts;
 
 var _save = require('./save');
-
-var _$ = require('./$');
 
 var keymap = {
 
@@ -719,7 +301,7 @@ function addKeyboardShortcuts() {
 	document.addEventListener('keyup', keyup);
 };
 
-},{"./$":5,"./save":10}],7:[function(require,module,exports){
+},{"./save":9}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -728,8 +310,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.compile = compile;
 
 var _manila = require('./manila');
-
-var _$ = require('./$');
 
 var cache = {};
 
@@ -749,14 +329,14 @@ function compile(pathOrSelector) {
 
 			try {
 
-				var template = (0, _$.$)(pathOrSelector);
+				var template = $(pathOrSelector);
 
 				cache[pathOrSelector] = (0, _manila.manila)(template.html());
 
 				resolve(cache[pathOrSelector]);
 			} catch (err) {
 
-				_$.$.get(pathOrSelector, function (template) {
+				$.get(pathOrSelector, function (template) {
 
 					cache[pathOrSelector] = (0, _manila.manila)(template);
 
@@ -767,7 +347,7 @@ function compile(pathOrSelector) {
 	});
 };
 
-},{"./$":5,"./manila":8}],8:[function(require,module,exports){
+},{"./manila":7}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -806,7 +386,7 @@ window.manila = manila;
 
 exports.manila = manila;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -814,26 +394,24 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.module = undefined;
 
-var _$ = require('./$');
-
 var _compile = require('./compile');
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _module(modules) {
 
-	(0, _$.$)('[data-component]').each(function (el) {
+	[].concat(_toConsumableArray(document.querySelectorAll('[data-component]'))).forEach(function (el) {
 
-		el = (0, _$.$)(el);
+		var component = modules[el.getAttribute('data-component')],
+		    events = el.getAttribute('data-events');
 
-		var component = modules[el.data('component')],
-		    events = el.data('events');
-
-		(0, _compile.compile)(el.data('template')).then(function (render) {
+		(0, _compile.compile)(el.getAttribute('data-template')).then(function (render) {
 
 			function resolve(data) {
 				var target = arguments.length <= 1 || arguments[1] === undefined ? el : arguments[1];
 
 
-				target.html(render(data));
+				target.innerHTML = render(data);
 			}
 
 			component.notify = function () {
@@ -848,10 +426,10 @@ function _module(modules) {
 			};
 
 			if (events) {
+				// this only supports one event right now
+				el.addEventListener(events, function (e) {
 
-				el.on(events, function (e) {
-
-					component.onEvent(resolve, (0, _$.$)(e.target), e);
+					component.onEvent(resolve, e.target, e);
 				});
 			}
 
@@ -864,35 +442,34 @@ function _module(modules) {
 }exports.module = _module;
 ;
 
-},{"./$":5,"./compile":7}],10:[function(require,module,exports){
+},{"./compile":6}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.save = save;
-
-var _$ = require('./$');
-
 function save() {
 
-	(0, _$.$)('.background').addClass('blur');
+	var bg = document.querySelector('.background');
 
-	_$.$.post('/save?file=' + (0, _$.$)('.file.active').data('path'), {
-		data: (0, _$.$)('.text').val(),
+	bg.classList.add('blur');
+
+	$.post('/save?file=' + document.querySelector('.file.active').getAttribute('data-path'), {
+		data: document.querySelector('.text').value,
 		token: window.token
 	}, function (result) {
 
-		if (result.data !== undefined) {
+		window.token = result.token;
 
-			window.token = result.data.token;
+		if (result.error) {
 
-			(0, _$.$)('.background').removeClass('blur');
+			console.error(result.error);
 		} else {
 
-			console.error(result);
+			bg.classList.remove('blur');
 		}
 	});
 };
 
-},{"./$":5}]},{},[1]);
+},{}]},{},[1]);

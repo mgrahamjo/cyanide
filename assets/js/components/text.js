@@ -1,28 +1,26 @@
-import { $ } from '../src/$';
-
 let i = 1,
 
-	el = $('.text'),
+	el = document.querySelector('.text'),
 	
-	numbers = $('.numbers');
+	numbers = document.querySelector('.numbers');
 
 function resetHeight() {
 
 	let height;
 
-	el.height('');
+	el.style.height = '';
 
-	numbers.height('');
+	numbers.style.height = '';
 
-	height = el.scrollHeight();
+	height = el.scrollHeight;
 
-	el.height(height);
+	el.style.height = height + 'px';
 
-	if (numbers.height() < height) {
+	if (numbers.clientHeight < height) {
 
-		while (numbers.height() < height) {
+		while (numbers.clientHeight < height) {
 
-			numbers.append(i + '<br>');
+			numbers.innerHTML += i + '<br>';
 
 			i++;
 
@@ -30,7 +28,7 @@ function resetHeight() {
 
 	} else {
 
-		numbers.height(height);
+		numbers.style.height = height + 'px';
 
 	}
 
@@ -42,7 +40,7 @@ const text = {
 
 	listen: (render, data) => {
 
-		el.val(data);
+		el.value = data;
 
 		resetHeight();
 

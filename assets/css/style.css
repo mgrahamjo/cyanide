@@ -74,6 +74,7 @@ nav {
     position: absolute;
     padding: 0;
     height: 1.5em;
+    overflow-y: hidden;
 }
 
 .numbers {

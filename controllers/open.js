@@ -9,7 +9,7 @@ module.exports = (resolve, request) => {
 		global.breadbox.csrf.makeToken(request).then((headers, token) => {
 
 			resolve({
-				data: data.stdout,
+				data: data.stdout.replace(/\n$/, ''),
 				token: token
 			}, 'json', headers);
 

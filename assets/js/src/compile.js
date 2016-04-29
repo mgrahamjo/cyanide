@@ -1,5 +1,4 @@
 import { manila } from './manila';
-import { $ } from './$';
 
 let cache = {};
 

@@ -1,34 +1,39 @@
-import { $ } from '../src/$';
 import tabs from './tabs';
 import text from './text';
 
 function onEvent(render, el) {
 
-	if (el.length) {
+	if (el) {
 
 		let target,
 
-			path = el.data('path');
+			path = el.getAttribute('data-path');
 
-		el.toggleClass('open');
+		el.classList.toggle('open');
 
-		$('.file.active').removeClass('active');
-
-		el.addClass('active');
-
-		if (el.hasClass('dir') && el.next('.children').length === 0) {
+		if ( el.classList.contains('dir') 
+			 && (!el.nextElementSibling
+			 || !el.nextElementSibling.classList.contains('children'))) {
 
 			$.get('/nav?dir=' + path, data => {
 
 				window.token = data.token;
 
-				el.after('<div class="children"/>');
+				el.outerHTML += '<div class="children"/>'; 
 
-				render(data, $(`[data-path="${el.data('path')}"] + .children`));
+				render(data, document.querySelector(`[data-path="${path}"] + .children`));
 
 			});
 
-		} else if (el.hasClass('file')) {
+		} else if (el.classList.contains('file')) {
+
+			[...document.querySelectorAll('.file.active')].forEach(e => {
+		
+				e.classList.remove('active');
+
+			});
+
+			el.classList.add('active');
 
 			$.get('/open?file=' + path, data => {
 
@@ -38,7 +43,7 @@ function onEvent(render, el) {
 				
 			});
 
-			tabs.notify(path, el.html());
+			tabs.notify(path, el.innerHTML);
 		}
 
 	}
