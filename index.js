@@ -1,6 +1,10 @@
 'use strict';
 
-const breadbox = require('breadbox'),
+const express = require('express'),
+
+	app = express(),
+
+	bodyParser = require('body-parser').urlencoded({ extended: false }),
 
 	fs = require('fs'),
 
@@ -34,7 +38,11 @@ function connect() {
 
 	ssh.connect(config).then(() => {
 
-		console.log('connected.');
+		app.listen(1337, () => {
+
+			console.log('Ready.');
+
+		});
 
 	}).catch(console.error);
 }
@@ -42,13 +50,9 @@ function connect() {
 
 function handleInput(err, result) {
 
-	breadbox.handle(err).then(() => {
+	config.passphrase = result.password;
 
-		config.passphrase = result.password;
-
-		connect();
-
-	});
+	connect();
 
 	prompt.stop();
 }
@@ -71,16 +75,11 @@ fs.readFile('./config.json', (err, json) => {
 	}
 });
 
+app
+	.use(express.static('assets'))
+	.use('/assets', express.static('assets'))
 
-breadbox({
-
-    controllers: {
-
-        '/index': require('./controllers/index'),
-        '/nav': require('./controllers/nav'),
-        '/open': require('./controllers/open'),
-        '/save': require('./controllers/save')
-
-    }
-
-});
+	.get('/', require('./controllers/index'))
+	.get('/nav', require('./controllers/nav'))
+	.get('/open', require('./controllers/open'))
+	.post('/save', bodyParser, require('./controllers/save'));

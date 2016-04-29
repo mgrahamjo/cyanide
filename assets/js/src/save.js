@@ -9,13 +9,10 @@ export function save() {
 		'/save?file=' + document.querySelector('.file.active').getAttribute('data-path'),
 
 		{
-			data: document.querySelector('.text').value,
-			token: window.token
+			data: document.querySelector('.text').value
 		},
 
 		result => {
-
-			window.token = result.token;
 
 			if (result.error) {
 			

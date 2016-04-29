@@ -17,8 +17,6 @@ function onEvent(render, el) {
 
 			$.get('/nav?dir=' + path, data => {
 
-				window.token = data.token;
-
 				el.outerHTML += '<div class="children"/>'; 
 
 				render(data, document.querySelector(`[data-path="${path}"] + .children`));
@@ -37,8 +35,6 @@ function onEvent(render, el) {
 
 			$.get('/open?file=' + path, data => {
 
-				window.token = data.token;
-
 				text.notify(data.data);
 				
 			});
@@ -55,8 +51,6 @@ const nav = {
 	init: render => {
 
 		$.get('/nav', data => {
-
-			window.token = data.token;
 
 			render(data);
 

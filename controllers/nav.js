@@ -3,7 +3,7 @@
 let util = require('../util');
 
 
-module.exports = (resolve, request) => {
+module.exports = (req, res) => {
 
 	function process(item) {
 
@@ -11,7 +11,7 @@ module.exports = (resolve, request) => {
 
 		item = item[item.length - 1];
 
-		let dir = request.query.dir ? `${request.query.dir}/${item}` : item;
+		let dir = req.query.dir ? `${req.query.dir}/${item}` : item;
 
 		return {
 			name: item,
@@ -20,7 +20,7 @@ module.exports = (resolve, request) => {
 			
 	}
 	
-	util.exec('ls -al', request.query.dir).then(all => {
+	util.exec('ls -al', req.query.dir).then(all => {
 
 		all = all.stdout.split('\n');
 
@@ -36,14 +36,9 @@ module.exports = (resolve, request) => {
 
 		}).map(process);
 
-		global.breadbox.csrf.makeToken(request).then((headers, token) => {
-
-			resolve({
-				dirs: dirs,
-				files: files,
-				token: token
-			}, 'json', headers);
-
+		res.json({
+			dirs: dirs,
+			files: files
 		});
 
 	});

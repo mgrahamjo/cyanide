@@ -62,8 +62,6 @@ function onEvent(render, el) {
 
 				$.get('/nav?dir=' + path, function (data) {
 
-					window.token = data.token;
-
 					el.outerHTML += '<div class="children"/>';
 
 					render(data, document.querySelector('[data-path="' + path + '"] + .children'));
@@ -79,8 +77,6 @@ function onEvent(render, el) {
 
 				$.get('/open?file=' + path, function (data) {
 
-					window.token = data.token;
-
 					_text2.default.notify(data.data);
 				});
 
@@ -95,8 +91,6 @@ var nav = {
 	init: function init(render) {
 
 		$.get('/nav', function (data) {
-
-			window.token = data.token;
 
 			render(data);
 		});
@@ -456,11 +450,8 @@ function save() {
 	bg.classList.add('blur');
 
 	$.post('/save?file=' + document.querySelector('.file.active').getAttribute('data-path'), {
-		data: document.querySelector('.text').value,
-		token: window.token
+		data: document.querySelector('.text').value
 	}, function (result) {
-
-		window.token = result.token;
 
 		if (result.error) {
 

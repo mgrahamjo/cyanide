@@ -1,11 +1,9 @@
 'use strict';
 
-module.exports = (resolve, request) => {
+const path = require('path');
 
-	breadbox.csrf.makeToken(request).then((headers, token) => {
+module.exports = (req, res) => {
 
-		resolve({ token: token }, null, headers);
-
-	});
+	res.sendFile(path.join(__dirname, '../views/index.html'));
 	
 };

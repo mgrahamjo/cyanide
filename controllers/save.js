@@ -2,20 +2,15 @@
 
 let util = require('../util');
 
-module.exports = (resolve, request) => {
+module.exports = (req, res) => {
 
-	let cmd = `cat >${request.query.file} <<'EOL'\n${request.body.data}\nEOL`;
+	let cmd = `cat >${req.query.file} <<'EOL'\n${req.body.data}\nEOL`;
 
 	util.exec(cmd).then(data => {
 
-		global.breadbox.csrf.makeToken(request).then((headers, token) => {
-
-			resolve({
-				data: data.stdout,
-				error: data.stderr,
-				token: token
-			}, 'json', headers);
-
+		res.json({
+			data: data.stdout,
+			error: data.stderr
 		});
 
 	});
