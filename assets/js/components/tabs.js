@@ -1,5 +1,7 @@
 import text from './text';
 import nav from './nav';
+import { save } from '../src/save';
+import { deleteFile } from '../src/deleteFile';
 
 let tabList = []
 
@@ -25,9 +27,47 @@ const tabs = {
 
 			text.notify('');
 
-			nav.notify(document.querySelector('.file.open'));
+			nav.notify(document.querySelector('.file.active') || document.querySelector('.file.open'));
 
 			render({ tabs: tabList });
+
+		} else if (el.classList.contains('save')) {
+
+			save();
+
+		} else if (el.classList.contains('new-file')) {
+
+			let activeDir = document.querySelector('.dir.selected'),
+
+				parentPath = activeDir ? activeDir.getAttribute('data-path') : '',
+
+				fileName = prompt('New file name:');
+
+			if (fileName) {
+
+				text.notify('');
+
+				[...document.querySelectorAll(`.file.active`)].forEach(elem => {
+					
+					elem.classList.remove('active');
+
+				});
+
+				tabs.notify(parentPath + '/' + fileName, fileName, true);
+
+			}
+
+		} else if (el.classList.contains('delete')) {
+
+			deleteFile();
+
+			tabList = tabList.filter(tab => {
+
+				return tab.class.indexOf('active') === -1;
+
+			});
+
+			tabs.notify();
 
 		} else {
 
@@ -37,33 +77,37 @@ const tabs = {
 
 	},
 
-	listen: (render, path, name) => {
+	listen: (render, path, name, isNew) => {
 
 		let tabAlreadyOpen;
 
-		tabList.forEach(tab => {
+		if (path && name) {
 
-			if (tab.path !== path) {
+			tabList.forEach(tab => {
 
-				tab.class = '';
+				if (tab.path !== path) {
 
-			} else {
+					tab.class = '';
 
-				tabAlreadyOpen = true;
+				} else {
 
-				tab.class = 'active';
+					tabAlreadyOpen = true;
+
+					tab.class = 'active';
+
+				}
+
+			});
+
+			if (!tabAlreadyOpen) {
+
+				tabList.push({
+					name: name,
+					path: path,
+					class: isNew ? 'active new' : 'active'
+				});
 
 			}
-
-		});
-
-		if (!tabAlreadyOpen) {
-
-			tabList.push({
-				name: name,
-				path: path,
-				class: 'active'
-			});
 
 		}
 

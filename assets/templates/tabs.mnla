@@ -6,3 +6,15 @@
 	</div>
 
 <<})>>
+
+<input type="checkbox" class="menu-toggle"/>
+<div class="nav">
+	<a class="save">Save</a>
+	<a class="new-file">New File</a>
+	<a class="delete">Delete</a>
+</div>
+<div class="menu">
+	<div class="bar"></div>
+	<div class="bar"></div>
+	<div class="bar"></div>
+</div>

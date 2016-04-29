@@ -1,7 +1,8 @@
 import tabs from './tabs';
 import text from './text';
+import loader from '../src/loader';
 
-function onEvent(render, el) {
+function onEvent(render, el, newFile) {
 
 	if (el) {
 
@@ -9,19 +10,45 @@ function onEvent(render, el) {
 
 			path = el.getAttribute('data-path');
 
-		el.classList.toggle('open');
+		if (el.classList.contains('dir')) {
 
-		if ( el.classList.contains('dir') 
-			 && (!el.nextElementSibling
-			 || !el.nextElementSibling.classList.contains('children'))) {
+			if (!newFile) {
 
-			$.get('/nav?dir=' + path, data => {
+				if (document.querySelector('.dir.selected')) {
 
-				el.outerHTML += '<div class="children"/>'; 
+					document.querySelector('.dir.selected').classList.remove('selected');
 
-				render(data, document.querySelector(`[data-path="${path}"] + .children`));
+				}
 
-			});
+				el.classList.toggle('open');
+
+				if (el.classList.contains('open')) {
+
+					el.classList.add('selected');
+
+				}
+
+			}
+
+			if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('children')) {
+
+				loader.after(el);
+
+				$.get('/nav?dir=' + path, data => {
+
+					loader.replace('<div class="children"/>');
+
+					render(data, document.querySelector(`[data-path="${path}"] + .children`));
+
+					if (newFile) {
+
+						document.querySelector(`.file[data-path="${newFile}"]`).classList.add('open', 'active');
+
+					}
+
+				});
+
+			}
 
 		} else if (el.classList.contains('file')) {
 
@@ -31,7 +58,11 @@ function onEvent(render, el) {
 
 			});
 
-			el.classList.add('active');
+			el.classList.add('active', 'open');
+
+			text.notify('');
+
+			loader.after('.overlay');
 
 			$.get('/open?file=' + path, data => {
 
@@ -46,7 +77,7 @@ function onEvent(render, el) {
 
 }
 
-const nav = {
+let nav = {
 
 	init: render => {
 

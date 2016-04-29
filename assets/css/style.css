@@ -16,7 +16,7 @@ nav {
     box-sizing: border-box;
 }
 
-.nav {
+.item {
   padding: 4px 15px;
   cursor: pointer;
   transition: color 0.3s;
@@ -26,7 +26,7 @@ nav {
     color: #DAA371;
 }
 
-.file.active {
+.file.active, .dir.selected {
     color: #FF9B40;
 }
 
@@ -39,7 +39,7 @@ nav {
   margin-left: 10px;
 }
 
-.nav:not(.open):hover {
+.item:not(.selected):not(.active):hover {
   color: white;
 }
 
@@ -73,8 +73,10 @@ nav {
     width: calc(100% - 29px);
     position: absolute;
     padding: 0;
-    height: 1.5em;
+    height: 0;
     overflow-y: hidden;
+    margin-top: 35px;
+    height: calc(100vh - 35px);
 }
 
 .numbers {
@@ -84,6 +86,7 @@ nav {
     text-align: center;
     line-height: 1.5;
     overflow: hidden;
+    margin-top: 35px;
 }
 
 .dir:after {
@@ -94,24 +97,27 @@ nav {
     width: 100%;
     background-color: #212127;
     height: 35px;
+    position: fixed;
+    z-index: 1;
+    box-shadow: 1px 1px 10px black;
 }
 
 .tab {
     padding: 9px 10px 9px 15px;
     border-bottom: 2px solid #C8976A;
     box-shadow: 1px 0px 1px black;
-    display: inline-block;
+    float: left;
     transition: background-color 0.3s, border-bottom 0.3s;
     cursor: pointer;
 }
 
 .tab:hover {
-    background-color: #27262D;
+    background-color: #302F35;
 }
 
 .tab.active {
     border-bottom: 2px solid #FF9B40;
-    background-color: #27262D;
+    background-color: #302F35;
 }
 
 .close {
@@ -130,4 +136,110 @@ nav {
 
 .close:after {
     content: "\00d7";
+}
+
+.loader {
+    padding: 1em;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.6s;
+}
+
+.loader.visible {
+    opacity: 1;
+}
+
+.background .loader {
+    position: fixed;
+    top: 50%;
+    left: 55%;
+}
+
+svg path,
+svg rect{
+    fill: #FF6700;
+}
+
+.menu-toggle {
+    position: fixed;
+    z-index: 2;
+    top: 7px;
+    right: 7px;
+    padding: 0;
+    margin: 0;
+    width: 27px;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    border-radius: 0;
+    height: 20px;
+    outline: none;
+    cursor: pointer;
+    background: none;
+}
+
+.menu {
+    width: 27px;
+    position: fixed;
+    top: 0;
+    right: 7px;
+    padding: 7px 0 0 20px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.menu .bar {
+    background-color: #F9F9F9;
+    height: 4px;
+    margin-bottom: 4px;
+        /* this shadow makes the menu button look good on both dark and light backgrounds, but it might look funky if your site's background is in-between */
+    box-shadow: 0px 4px 0px rgba(0,0,0,.15);
+    -moz-box-shadow: 0px 4px 0px rgba(0,0,0,.15);
+    -webkit-box-shadow: 0px 4px 0px rgba(0,0,0,.15);
+}
+
+.nav {
+    font-size: 10pt;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    background-color: rgba(0,0,0,.6);
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding-top: 50px;
+    height: 100%;
+    z-index: 2;
+    width: 15%;
+    min-width: 101px;
+}
+
+.nav a {
+    pointer-events: auto;
+    display: block;
+    color: white;
+    line-height: 34px;
+    padding: 0 25px 0 20px;
+    visibility: visible;
+    cursor: pointer;
+}
+
+.nav a:hover {
+    color: #DEDEDE;
+}
+
+.menu-toggle:checked {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.menu-toggle:checked + .nav {
+    visibility: visible;
+    opacity: 1;
 }

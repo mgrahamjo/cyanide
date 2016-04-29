@@ -25,7 +25,6 @@ const express = require('express'),
 		}
 	};
 
-
 let config;
 
 
@@ -82,4 +81,5 @@ app
 	.get('/', require('./controllers/index'))
 	.get('/nav', require('./controllers/nav'))
 	.get('/open', require('./controllers/open'))
-	.post('/save', bodyParser, require('./controllers/save'));
+	.post('/save', bodyParser, require('./controllers/save'))
+	.post('/delete', require('./controllers/delete'));

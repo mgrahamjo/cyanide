@@ -1,31 +1,57 @@
+import nav from '../components/nav';
+
 export function save() {
 
-	let bg = document.querySelector('.background');
+	let bg = document.querySelector('.background'),
 
-	bg.classList.add('blur');
+		activeFile = document.querySelector('.file.active'),
 
-	$.post(
+		path;
 
-		'/save?file=' + document.querySelector('.file.active').getAttribute('data-path'),
+	if (activeFile) {
 
-		{
-			data: document.querySelector('.text').value
-		},
+		bg.classList.add('blur');
 
-		result => {
+		path = activeFile.getAttribute('data-path');
 
-			if (result.error) {
-			
-				console.error(result.error);
-			
-			} else {
+		$.post(
 
-				bg.classList.remove('blur');
+			'/save?file=' + path,
+
+			{
+				data: document.querySelector('.text').value
+			},
+
+			result => {
+
+				if (result.error) {
+
+					alert(result.error);
+				
+					console.error(result.error);
+				
+				} else {
+
+					if (activeFile.classList.contains('new')) {
+
+						let selectedDir = document.querySelector('.dir.selected');
+
+						activeFile.classList.remove('new');
+
+						selectedDir.nextElementSibling.outerHTML = '';
+
+						nav.notify(selectedDir, path);
+
+					}
+
+					bg.classList.remove('blur');
+
+				}
 
 			}
+			
+		);
 
-		}
-		
-	);
+	}
 
 };

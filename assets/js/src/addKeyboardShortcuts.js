@@ -33,6 +33,9 @@ function keydown(e) {
 
 			key.callback();
 
+			delete pressed[code];
+			delete pressed[key.pair];
+
 		}
 
 	}

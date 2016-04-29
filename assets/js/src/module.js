@@ -29,8 +29,10 @@ export function module(modules) {
 			if (events) {
 				// this only supports one event right now
 				el.addEventListener(events, e => {
+
+					e.stopPropagation();
 					
-					component.onEvent( resolve, e.target, e );
+					component.onEvent( resolve, e.target );
 
 				});
 

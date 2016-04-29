@@ -1,3 +1,5 @@
+import loader from '../src/loader';
+
 let i = 1,
 
 	el = document.querySelector('.text'),
@@ -10,11 +12,9 @@ function resetHeight() {
 
 	el.style.height = '';
 
-	numbers.style.height = '';
-
 	height = el.scrollHeight;
 
-	el.style.height = height + 'px';
+	numbers.style.height = '';
 
 	if (numbers.clientHeight < height) {
 
@@ -32,6 +32,8 @@ function resetHeight() {
 
 	}
 
+	el.style.height = height + 'px';
+
 }
 
 const text = {
@@ -39,6 +41,8 @@ const text = {
 	onEvent: resetHeight,
 
 	listen: (render, data) => {
+
+		loader.hide();
 
 		el.value = data;
 

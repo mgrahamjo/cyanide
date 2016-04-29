@@ -1,17 +1,13 @@
 <!doctype html>
 <html>
 <head>
-<title>test</title>
+<title>KVM</title>
 <link rel="stylesheet" href="/assets/css/style.css" />
 <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-<nav 
-	data-component="nav" 
-	data-template="/assets/templates/nav.mnla" 
-	data-events="click"
-></nav>
+<nav data-component="nav" data-template="/assets/templates/nav.mnla" data-events="click"></nav>
 
 <div class="background">
 
@@ -21,13 +17,51 @@
 		data-component="tabs"
 		data-template="/assets/templates/tabs.mnla"
 		data-events="click"
-	></div>
+	>
+		<input type="checkbox" class="menu-toggle"/>
+		<div class="nav">
+			<a class="save">Save</a>
+			<a class="new-file">New File</a>
+			<a class="delete">Delete</a>
+		</div>
+		<div class="menu">
+			<div class="bar"></div>
+			<div class="bar"></div>
+			<div class="bar"></div>
+		</div>
+	</div>
 
 	<div class="numbers"></div>
 
 	<textarea class="text" data-component="text" data-events="input"></textarea>
 
 </div>
+
+<script id="loader-template" type="text/template">
+	<div class="loader">
+	  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+	    <rect x="0" y="0" width="4" height="10" fill="#333">
+	      <animateTransform attributeType="xml"
+	        attributeName="transform" type="translate"
+	        values="0 0; 0 20; 0 0"
+	        begin="0" dur="0.6s" repeatCount="indefinite" />
+	    </rect>
+	    <rect x="10" y="0" width="4" height="10" fill="#333">
+	      <animateTransform attributeType="xml"
+	        attributeName="transform" type="translate"
+	        values="0 0; 0 20; 0 0"
+	        begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+	    </rect>
+	    <rect x="20" y="0" width="4" height="10" fill="#333">
+	      <animateTransform attributeType="xml"
+	        attributeName="transform" type="translate"
+	        values="0 0; 0 20; 0 0"
+	        begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+	    </rect>
+	  </svg>
+	</div>
+</script>
 
 <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 <script src="/assets/js/dist/script.js"></script>
