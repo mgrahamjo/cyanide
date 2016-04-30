@@ -191,7 +191,7 @@ var tabs = {
 		} else if (el.classList.contains('new-file')) {
 
 			var activeDir = document.querySelector('.dir.selected'),
-			    parentPath = activeDir ? activeDir.getAttribute('data-path') : '',
+			    parentPath = activeDir ? activeDir.getAttribute('data-path') + '/' : '',
 			    fileName = prompt('New file name:');
 
 			if (fileName) {
@@ -203,7 +203,7 @@ var tabs = {
 					elem.classList.remove('active');
 				});
 
-				tabs.notify(parentPath + '/' + fileName, fileName, true);
+				tabs.notify(parentPath + fileName, fileName, true);
 			}
 		} else if (el.classList.contains('delete')) {
 
@@ -616,7 +616,12 @@ function _module(modules) {
 
 			if (component.init) {
 
-				component.init(resolve);
+				component.reinitialize = function () {
+
+					component.init(resolve);
+				};
+
+				component.reinitialize();
 			}
 		});
 	});
@@ -666,9 +671,15 @@ function save() {
 
 					activeFile.classList.remove('new');
 
-					selectedDir.nextElementSibling.outerHTML = '';
+					if (selectedDir) {
 
-					_nav2.default.notify(selectedDir, path);
+						selectedDir.nextElementSibling.outerHTML = '';
+
+						_nav2.default.notify(selectedDir, path);
+					} else {
+
+						_nav2.default.reinitialize();
+					}
 				}
 
 				bg.classList.remove('blur');

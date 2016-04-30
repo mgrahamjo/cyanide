@@ -40,7 +40,13 @@ export function module(modules) {
 
 			if (component.init) {
 
-				component.init( resolve );
+				component.reinitialize = () => {
+
+					component.init( resolve );
+
+				};
+
+				component.reinitialize();
 
 			}
 

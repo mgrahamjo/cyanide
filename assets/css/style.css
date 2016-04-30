@@ -4,16 +4,19 @@ body {
   margin: 0;
   font-family: 'Inconsolata', 'monospace';
   font-size: 10pt;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 nav {
-  background-color: #2B2B33;
+    background-color: #2B2B33;
     width: 20%;
     position: fixed;
     height: 100%;
     padding: 10px 0;
     overflow-y: scroll;
     box-sizing: border-box;
+    z-index: -1;
 }
 
 .item {
@@ -44,12 +47,13 @@ nav {
 }
 
 .background {
-    position: absolute;
-    left: calc(20% - 20px);
     min-height: 100%;
     background-color: #27262D;
-    width: calc(80% + 20px);
+    width: calc(80% + 18px);
+    float: right;
+    position: relative;
     transition: -webkit-filter 0.3s, filter 0.3s;
+    box-shadow: 0 0 10px rgba(0,0,0,.5);
 }
 
 .background.blur {
@@ -70,13 +74,12 @@ nav {
     color: inherit;
     font-family: inherit;
     font-size: inherit;
-    width: calc(100% - 29px);
-    position: absolute;
+    width: calc(100% - 25px);
     padding: 0;
     height: 0;
     overflow-y: hidden;
     margin-top: 35px;
-    height: calc(100vh - 35px);
+    height: calc(100vh - 38px);
 }
 
 .numbers {

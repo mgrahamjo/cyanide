@@ -38,9 +38,16 @@ export function save() {
 
 						activeFile.classList.remove('new');
 
-						selectedDir.nextElementSibling.outerHTML = '';
+						if (selectedDir) {
 
-						nav.notify(selectedDir, path);
+							selectedDir.nextElementSibling.outerHTML = '';
+
+							nav.notify(selectedDir, path);
+
+						} else {
+
+							nav.reinitialize();
+						}
 
 					}
 

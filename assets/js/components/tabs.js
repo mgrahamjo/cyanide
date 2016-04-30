@@ -39,7 +39,7 @@ const tabs = {
 
 			let activeDir = document.querySelector('.dir.selected'),
 
-				parentPath = activeDir ? activeDir.getAttribute('data-path') : '',
+				parentPath = activeDir ? activeDir.getAttribute('data-path') + '/' : '',
 
 				fileName = prompt('New file name:');
 
@@ -53,7 +53,7 @@ const tabs = {
 
 				});
 
-				tabs.notify(parentPath + '/' + fileName, fileName, true);
+				tabs.notify(parentPath + fileName, fileName, true);
 
 			}
 
