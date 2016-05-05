@@ -2,96 +2,71 @@ import tabs from './tabs';
 import text from './text';
 import loader from '../src/loader';
 
-function onEvent(render, el, newFile) {
+let dirs = {},
+	
+	apply;
 
-	if (el) {
+dirs.clickDir = dir => {
 
-		let target,
+	console.log(dir);
 
-			path = el.getAttribute('data-path');
+	dir.open = !dir.open;
 
-		if (el.classList.contains('dir')) {
+};
 
-			if (!newFile) {
+// function click(render, el) {
 
-				if (document.querySelector('.dir.selected')) {
+// 	if (el.classList.contains('dir')) {
 
-					document.querySelector('.dir.selected').classList.remove('selected');
+// 		let path = el.getAttribute('data-path'),
 
-				}
+// 			paths = path.split('/'),
 
-				el.classList.toggle('open');
+// 			thisDir = dirs;
 
-				if (el.classList.contains('open')) {
+// 		while (paths.length > 0) {
 
-					el.classList.add('selected');
+// 			thisDir = thisDir[paths.shift()];
 
-				}
+// 			thisDir.open = 'open';
 
-			}
+// 		}
 
-			if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('children')) {
+// 		thisDir.selected = 'selected';
 
-				loader.after(el);
+// 		$.get('/nav?path=' + path, data => {
 
-				$.get('/nav?dir=' + path, data => {
+// 			thisDir.children = data;
 
-					loader.replace('<div class="children"/>');
+// 			console.log(dirs);
 
-					render(data, document.querySelector(`[data-path="${path}"] + .children`));
+// 			render(dirs);
 
-					if (newFile) {
+// 		});
 
-						document.querySelector(`.file[data-path="${newFile}"]`).classList.add('open', 'active');
+// 	}
 
-					}
-
-				});
-
-			}
-
-		} else if (el.classList.contains('file')) {
-
-			[...document.querySelectorAll('.file.active')].forEach(e => {
-		
-				e.classList.remove('active');
-
-			});
-
-			el.classList.add('active', 'open');
-
-			text.notify('');
-
-			loader.after('.overlay');
-
-			$.get('/open?file=' + path, data => {
-
-				text.notify(data.data);
-				
-			});
-
-			tabs.notify(path, el.innerHTML);
-		}
-
-	}
-
-}
+// }
 
 let nav = {
 
 	init: render => {
 
+		apply = render;
+
 		$.get('/nav', data => {
 
-			render(data);
+			dirs.dir = data;
+
+			render(dirs);
 
 		});
 
 	},
 
-	onEvent: onEvent,
+	// click: click,
 
-	listen: onEvent
+	// listen: click
 
 };
 

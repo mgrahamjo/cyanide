@@ -57,7 +57,7 @@ function handleInput(err, result) {
 }
 
 
-fs.readFile('./config.json', (err, json) => {
+fs.readFile('./config2.json', (err, json) => {
 
 	config = JSON.parse(json);
 

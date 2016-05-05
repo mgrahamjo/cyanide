@@ -20,9 +20,9 @@ export function compile(pathOrSelector) {
 
 			try {
 
-				let template = $(pathOrSelector);
-
-				cache[pathOrSelector] = manila(template.html());
+				cache[pathOrSelector] = manila(
+					document.querySelector(pathOrSelector).innerHTML
+				);
 
 				resolve(cache[pathOrSelector]);
 

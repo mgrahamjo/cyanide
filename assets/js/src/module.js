@@ -1,16 +1,48 @@
 import { compile } from './compile';
 
+window.component = {};
+
+window.handlers = {};
+
 export function module(modules) {
 
-	[ ...document.querySelectorAll('[data-component]')].forEach(el => {
+	[...document.querySelectorAll('[data-component]')].forEach(el => {
 
-		let component = modules[el.getAttribute('data-component')],
+		let componentName = el.getAttribute('data-component'),
+
+			component = modules[componentName],
 
 			events = el.getAttribute('data-events');
 		
 		compile( el.getAttribute('data-template') ).then(render => {
 
 			function resolve(data, target = el) {
+
+				let index = 0;
+
+				window.handlers[componentName] = [];
+
+				data.on = (event, handler, ...args) => {
+
+					let eventString;
+
+					window.handlers[componentName][index] = e => {
+
+						args.push(e);
+
+						handler.apply(data, args);
+
+						resolve(data);
+
+					};
+
+					eventString = `on${event}="handlers.${componentName}[${index}]()"`;
+
+					index++;
+
+					return eventString;
+
+				}
 
 				target.innerHTML = render(data);
 

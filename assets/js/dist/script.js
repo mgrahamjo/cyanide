@@ -50,88 +50,69 @@ var _loader2 = _interopRequireDefault(_loader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var dirs = {},
+    apply = void 0;
 
-function onEvent(render, el, newFile) {
+dirs.clickDir = function (dir) {
 
-	if (el) {
-		(function () {
+	console.log(dir);
 
-			var target = void 0,
-			    path = el.getAttribute('data-path');
+	dir.open = !dir.open;
+};
 
-			if (el.classList.contains('dir')) {
+// function click(render, el) {
 
-				if (!newFile) {
+// 	if (el.classList.contains('dir')) {
 
-					if (document.querySelector('.dir.selected')) {
+// 		let path = el.getAttribute('data-path'),
 
-						document.querySelector('.dir.selected').classList.remove('selected');
-					}
+// 			paths = path.split('/'),
 
-					el.classList.toggle('open');
+// 			thisDir = dirs;
 
-					if (el.classList.contains('open')) {
+// 		while (paths.length > 0) {
 
-						el.classList.add('selected');
-					}
-				}
+// 			thisDir = thisDir[paths.shift()];
 
-				if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('children')) {
+// 			thisDir.open = 'open';
 
-					_loader2.default.after(el);
+// 		}
 
-					$.get('/nav?dir=' + path, function (data) {
+// 		thisDir.selected = 'selected';
 
-						_loader2.default.replace('<div class="children"/>');
+// 		$.get('/nav?path=' + path, data => {
 
-						render(data, document.querySelector('[data-path="' + path + '"] + .children'));
+// 			thisDir.children = data;
 
-						if (newFile) {
+// 			console.log(dirs);
 
-							document.querySelector('.file[data-path="' + newFile + '"]').classList.add('open', 'active');
-						}
-					});
-				}
-			} else if (el.classList.contains('file')) {
+// 			render(dirs);
 
-				[].concat(_toConsumableArray(document.querySelectorAll('.file.active'))).forEach(function (e) {
+// 		});
 
-					e.classList.remove('active');
-				});
+// 	}
 
-				el.classList.add('active', 'open');
-
-				_text2.default.notify('');
-
-				_loader2.default.after('.overlay');
-
-				$.get('/open?file=' + path, function (data) {
-
-					_text2.default.notify(data.data);
-				});
-
-				_tabs2.default.notify(path, el.innerHTML);
-			}
-		})();
-	}
-}
+// }
 
 var nav = {
 
 	init: function init(render) {
 
+		apply = render;
+
 		$.get('/nav', function (data) {
 
-			render(data);
+			dirs.dir = data;
+
+			render(dirs);
 		});
-	},
-
-	onEvent: onEvent,
-
-	listen: onEvent
+	}
 
 };
+
+// click: click,
+
+// listen: click
 
 exports.default = nav;
 
@@ -403,9 +384,7 @@ function compile(pathOrSelector) {
 
 			try {
 
-				var template = $(pathOrSelector);
-
-				cache[pathOrSelector] = (0, _manila.manila)(template.html());
+				cache[pathOrSelector] = (0, _manila.manila)(document.querySelector(pathOrSelector).innerHTML);
 
 				resolve(cache[pathOrSelector]);
 			} catch (err) {
@@ -577,11 +556,16 @@ var _compile = require('./compile');
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+window.component = {};
+
+window.handlers = {};
+
 function _module(modules) {
 
 	[].concat(_toConsumableArray(document.querySelectorAll('[data-component]'))).forEach(function (el) {
 
-		var component = modules[el.getAttribute('data-component')],
+		var componentName = el.getAttribute('data-component'),
+		    component = modules[componentName],
 		    events = el.getAttribute('data-events');
 
 		(0, _compile.compile)(el.getAttribute('data-template')).then(function (render) {
@@ -590,12 +574,39 @@ function _module(modules) {
 				var target = arguments.length <= 1 || arguments[1] === undefined ? el : arguments[1];
 
 
+				var index = 0;
+
+				window.handlers[componentName] = [];
+
+				data.on = function (event, handler) {
+					for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+						args[_key - 2] = arguments[_key];
+					}
+
+					var eventString = void 0;
+
+					window.handlers[componentName][index] = function (e) {
+
+						args.push(e);
+
+						handler.apply(data, args);
+
+						resolve(data);
+					};
+
+					eventString = 'on' + event + '="handlers.' + componentName + '[' + index + ']()"';
+
+					index++;
+
+					return eventString;
+				};
+
 				target.innerHTML = render(data);
 			}
 
 			component.notify = function () {
-				for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-					args[_key] = arguments[_key];
+				for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+					args[_key2] = arguments[_key2];
 				}
 
 				if (component.listen) {
