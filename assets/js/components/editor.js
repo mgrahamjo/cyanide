@@ -1,14 +1,16 @@
 import loader from '../src/loader';
 
-let i = 1,
+let numbers = document.querySelector('.numbers'),
 
-	el = document.querySelector('.text'),
-	
-	numbers = document.querySelector('.numbers');
+	vm = {
+		text: ''
+	};
 
-function resetHeight() {
+vm.resetHeight = e => {
 
-	let height;
+	let el = document.querySelector('.text'),
+
+		height;
 
 	el.style.height = '';
 
@@ -20,9 +22,7 @@ function resetHeight() {
 
 		while (numbers.clientHeight < height) {
 
-			numbers.innerHTML += i + '<br>';
-
-			i++;
+			numbers.innerHTML += '<div class="num"></div>';
 
 		}
 
@@ -34,41 +34,58 @@ function resetHeight() {
 
 	el.style.height = height + 'px';
 
-}
+};
 
-function update(data) {
+function update(text) {
 
-	el.value = data;
-
-	resetHeight();
+	vm.text = text;
 
 	loader.hide();
 
+	return vm;
+
 }
 
-function listen(render, path) {
+function listen(path) {
 
-	loader.after('.overlay');
+	return new Promise(resolve => {
 
-	if (path) {
+		loader.after('.overlay');
 
-		$.get('/open?file=' + path, data => {
+		if (path) {
 
-			update(data.data);
+			$.get('/open?file=' + path, data => {
 
-		});
+				resolve(update(data.data));
 
-	} else {
+				vm.resetHeight();
 
-		update('');
+			});
 
-	}
+		} else {
+
+			resolve(update(''));
+
+			vm.resetHeight();
+
+		}
+
+	});
 
 }
 
 export default {
 
-	onEvent: resetHeight,
+	init: () => {
+
+		return new Promise(resolve => {
+
+			resolve(vm);
+
+		});
+
+	},
+
 	listen: listen
 
 };

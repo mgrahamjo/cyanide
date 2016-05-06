@@ -42,13 +42,15 @@ var _loader2 = _interopRequireDefault(_loader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var i = 1,
-    el = document.querySelector('.text'),
-    numbers = document.querySelector('.numbers');
+var numbers = document.querySelector('.numbers'),
+    vm = {
+	text: ''
+};
 
-function resetHeight() {
+vm.resetHeight = function (e) {
 
-	var height = void 0;
+	var el = document.querySelector('.text'),
+	    height = void 0;
 
 	el.style.height = '';
 
@@ -60,9 +62,7 @@ function resetHeight() {
 
 		while (numbers.clientHeight < height) {
 
-			numbers.innerHTML += i + '<br>';
-
-			i++;
+			numbers.innerHTML += '<div class="num"></div>';
 		}
 	} else {
 
@@ -70,36 +70,50 @@ function resetHeight() {
 	}
 
 	el.style.height = height + 'px';
-}
+};
 
-function update(data) {
+function update(text) {
 
-	el.value = data;
-
-	resetHeight();
+	vm.text = text;
 
 	_loader2.default.hide();
+
+	return vm;
 }
 
-function listen(render, path) {
+function listen(path) {
 
-	_loader2.default.after('.overlay');
+	return new Promise(function (resolve) {
 
-	if (path) {
+		_loader2.default.after('.overlay');
 
-		$.get('/open?file=' + path, function (data) {
+		if (path) {
 
-			update(data.data);
-		});
-	} else {
+			$.get('/open?file=' + path, function (data) {
 
-		update('');
-	}
+				resolve(update(data.data));
+
+				vm.resetHeight();
+			});
+		} else {
+
+			resolve(update(''));
+
+			vm.resetHeight();
+		}
+	});
 }
 
 exports.default = {
 
-	onEvent: resetHeight,
+	init: function init() {
+
+		return new Promise(function (resolve) {
+
+			resolve(vm);
+		});
+	},
+
 	listen: listen
 
 };
@@ -125,22 +139,25 @@ var vm = {
 
 vm.clickDir = function (dir) {
 
-	dir.open = !dir.open;
+	return new Promise(function (resolve) {
 
-	vm.selected = dir.path;
+		dir.open = !dir.open;
 
-	if (!dir.children) {
+		vm.selected = dir.path;
 
-		return new Promise(function (resolve) {
+		if (!dir.children) {
 
 			$.get('/nav?path=' + dir.path, function (data) {
 
 				dir.children = data;
 
-				resolve();
+				resolve(vm);
 			});
-		});
-	}
+		} else {
+
+			resolve(vm);
+		}
+	});
 };
 
 vm.clickFile = function (file) {
@@ -148,30 +165,36 @@ vm.clickFile = function (file) {
 	_fileManager2.default.open(file);
 };
 
-function listen(render, path, open) {
+function listen(path, open) {
 
-	if (open) {
+	return new Promise(function (resolve) {
 
-		vm.open[path] = path;
+		if (open) {
 
-		vm.active = path;
-	} else {
+			vm.open[path] = path;
 
-		delete vm.open[path];
-	}
+			vm.active = path;
+		} else {
 
-	render(vm);
+			delete vm.open[path];
+		}
+
+		resolve(vm);
+	});
 }
 
 exports.default = {
 
-	init: function init(render) {
+	init: function init() {
 
-		$.get('/nav', function (data) {
+		return new Promise(function (resolve) {
 
-			vm.dir = data;
+			$.get('/nav', function (data) {
 
-			render(vm);
+				vm.dir = data;
+
+				resolve(vm);
+			});
 		});
 	},
 
@@ -216,26 +239,32 @@ vm.open = function (path) {
 	});
 };
 
-function listen(render, file, open) {
+function listen(file, open) {
 
-	if (open) {
+	return new Promise(function (resolve) {
 
-		vm.active = file.path;
+		if (open) {
 
-		vm.tabs[file.path] = file.name;
-	} else {
+			vm.active = file.path;
 
-		delete vm.tabs[file.path];
-	}
+			vm.tabs[file.path] = file.name;
+		} else {
 
-	render(vm);
+			delete vm.tabs[file.path];
+		}
+
+		resolve(vm);
+	});
 }
 
 exports.default = {
 
-	init: function init(render) {
+	init: function init() {
 
-		render(vm);
+		return new Promise(function (resolve) {
+
+			resolve(vm);
+		});
 	},
 
 	listen: listen
@@ -512,19 +541,28 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 window.manila.handlers = {};
 
+function resolvePromise(resolve, promise) {
+
+	if (promise && typeof promise.then === 'function') {
+
+		promise.then(function (data) {
+
+			resolve(data);
+		});
+	}
+}
+
 function _module(modules) {
 
 	[].concat(_toConsumableArray(document.querySelectorAll('[data-component]'))).forEach(function (el) {
 
 		var componentName = el.getAttribute('data-component'),
-		    component = modules[componentName],
-		    events = el.getAttribute('data-events');
+		    component = modules[componentName];
 
 		(0, _compile.compile)(el.getAttribute('data-template')).then(function (render) {
 
 			function resolve() {
 				var data = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-				var target = arguments.length <= 1 || arguments[1] === undefined ? el : arguments[1];
 
 
 				var index = 0;
@@ -540,23 +578,11 @@ function _module(modules) {
 
 					window.manila.handlers[componentName][index] = function (e) {
 
-						var promise = void 0;
-
 						e.stopPropagation();
 
 						args.push(e);
 
-						promise = handler.apply(data, args);
-
-						if (promise && typeof promise.then === 'function') {
-
-							promise.then(function () {
-								resolve(data);
-							});
-						} else {
-
-							resolve(data);
-						}
+						resolvePromise(resolve, handler.apply(data, args));
 					};
 
 					eventString = 'on' + event + '=manila.handlers.' + componentName + '[' + index + '](event)';
@@ -566,7 +592,15 @@ function _module(modules) {
 					return eventString;
 				};
 
-				target.innerHTML = render(data);
+				var tagName = el.tagName.toLowerCase();
+
+				if (tagName === 'input' || tagName === 'textarea') {
+					console.log(render.toString());
+					el.value = render(data);
+				} else {
+
+					el.innerHTML = render(data);
+				}
 			}
 
 			component.notify = function () {
@@ -574,30 +608,15 @@ function _module(modules) {
 					args[_key2] = arguments[_key2];
 				}
 
-				if (component.listen) {
+				if (typeof component.listen === 'function') {
 
-					component.listen.apply(component, [resolve].concat(args));
+					resolvePromise(resolve, component.listen.apply(component, [].concat(args)));
 				}
 			};
 
-			if (events) {
-				// this only supports one event right now
-				el.addEventListener(events, function (e) {
+			if (typeof component.init === 'function') {
 
-					e.stopPropagation();
-
-					component.onEvent(resolve, e.target);
-				});
-			}
-
-			if (component.init) {
-
-				component.reinitialize = function () {
-
-					component.init(resolve);
-				};
-
-				component.reinitialize();
+				resolvePromise(resolve, component.init());
 			}
 		});
 	});

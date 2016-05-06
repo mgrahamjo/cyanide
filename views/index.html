@@ -60,7 +60,11 @@
 
 	<div class="numbers"></div>
 
-	<textarea class="text" data-component="editor"></textarea>
+	<div data-component="editor" data-template="#text-template"></div>
+		<script type="text/template" id="text-template">
+			<textarea class="text" <-on('input', resetHeight)->><-text-></textarea>
+		</script>
+	</div>
 
 </div>
 

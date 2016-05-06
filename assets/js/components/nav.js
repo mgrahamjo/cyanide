@@ -8,25 +8,29 @@ let vm = {
 
 vm.clickDir = dir => {
 
-	dir.open = !dir.open;
+	return new Promise(resolve => {
 
-	vm.selected = dir.path;
+		dir.open = !dir.open;
 
-	if (!dir.children) {
+		vm.selected = dir.path;
 
-		return new Promise(resolve => {
+		if (!dir.children) {
 
 			$.get('/nav?path=' + dir.path, data => {
 
 				dir.children = data;
 
-				resolve();
+				resolve(vm);
 
 			});
 
-		});
+		} else {
 
-	}
+			resolve(vm);
+
+		}
+
+	});
 
 };
 
@@ -36,33 +40,41 @@ vm.clickFile = file => {
 
 };
 
-function listen(render, path, open) {
+function listen(path, open) {
 
-	if (open) {
+	return new Promise(resolve => {
 
-		vm.open[path] = path;
+		if (open) {
 
-		vm.active = path;
+			vm.open[path] = path;
 
-	} else {
+			vm.active = path;
 
-		delete vm.open[path];
+		} else {
 
-	}
+			delete vm.open[path];
 
-	render(vm);
+		}
+
+		resolve(vm);
+
+	});
 
 }
 
 export default {
 
-	init: render => {
+	init: () => {
 
-		$.get('/nav', data => {
+		return new Promise(resolve => {
 
-			vm.dir = data;
+			$.get('/nav', data => {
 
-			render(vm);
+				vm.dir = data;
+
+				resolve(vm);
+
+			});
 
 		});
 

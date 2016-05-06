@@ -26,29 +26,37 @@ vm.open = path => {
 
 };
 
-function listen(render, file, open) {
+function listen(file, open) {
 
-	if (open) {
+	return new Promise(resolve => {
 
-		vm.active = file.path;
+		if (open) {
 
-		vm.tabs[file.path] = file.name;
+			vm.active = file.path;
 
-	} else {
+			vm.tabs[file.path] = file.name;
 
-		delete vm.tabs[file.path];
+		} else {
 
-	}
+			delete vm.tabs[file.path];
 
-	render(vm);
+		}
+
+		resolve(vm);
+
+	});
 
 }
 
 export default {
 	
-	init: render => {
+	init: () => {
 
-		render(vm);
+		return new Promise(resolve => {
+
+			resolve(vm);
+
+		});
 
 	},
 

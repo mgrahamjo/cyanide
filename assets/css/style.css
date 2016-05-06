@@ -90,6 +90,12 @@ nav {
     line-height: 1.5;
     overflow: hidden;
     margin-top: 35px;
+    counter-reset: line;
+}
+
+.num:before {
+    counter-increment: line;
+    content: counter(line);
 }
 
 .folder:after {

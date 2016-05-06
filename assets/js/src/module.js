@@ -2,19 +2,31 @@ import { compile } from './compile';
 
 window.manila.handlers = {};
 
+function resolvePromise(resolve, promise) {
+
+	if (promise && typeof promise.then === 'function') {
+
+		promise.then(data => {
+
+			resolve(data);
+			
+		});
+
+	}
+
+}
+
 export function module(modules) {
 
 	[...document.querySelectorAll('[data-component]')].forEach(el => {
 
 		let componentName = el.getAttribute('data-component'),
 
-			component = modules[componentName],
-
-			events = el.getAttribute('data-events');
+			component = modules[componentName];
 		
 		compile( el.getAttribute('data-template') ).then(render => {
 
-			function resolve(data = {}, target = el) {
+			function resolve(data = {}) {
 
 				let index = 0;
 
@@ -26,25 +38,11 @@ export function module(modules) {
 
 					window.manila.handlers[componentName][index] = e => {
 
-						let promise;
-
 						e.stopPropagation();
 						
 						args.push(e);
 
-						promise = handler.apply(data, args);
-
-						if (promise && typeof promise.then === 'function') {
-
-							promise.then(() => {
-								resolve(data);
-							});
-
-						} else {
-
-							resolve(data);
-
-						}
+						resolvePromise(resolve, handler.apply(data, args));
 
 					};
 
@@ -56,41 +54,33 @@ export function module(modules) {
 
 				};
 
-				target.innerHTML = render(data);
+				let tagName = el.tagName.toLowerCase();
+
+				if (tagName === 'input' || tagName === 'textarea') {
+console.log(render.toString());
+					el.value = render(data);
+
+				} else {
+
+					el.innerHTML = render(data);
+
+				}
 
 			}
 
 			component.notify = (...args) => {
 
-				if (component.listen) {
+				if (typeof component.listen === 'function') {
 
-					component.listen.apply(component, [resolve, ...args]);
+					resolvePromise(resolve, component.listen.apply(component, [...args]))
 
 				}
 
 			};
 
-			if (events) {
-				// this only supports one event right now
-				el.addEventListener(events, e => {
+			if (typeof component.init === 'function') {
 
-					e.stopPropagation();
-					
-					component.onEvent( resolve, e.target );
-
-				});
-
-			}
-
-			if (component.init) {
-
-				component.reinitialize = () => {
-
-					component.init( resolve );
-
-				};
-
-				component.reinitialize();
+				resolvePromise(resolve, component.init());
 
 			}
 
