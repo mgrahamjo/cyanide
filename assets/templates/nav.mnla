@@ -1,18 +1,19 @@
-<<function renderDirs(dir) {>>
-	<<if (dir.dirs) {>>
-		<<dir.dirs.forEach(dir => {>>
-			<div class="item dir <<(dir.selected ? 'selected' : '')>> <<(dir.open ? 'open' : '')>>" data-path="<<dir.path>>" <<<on('click', clickDir, dir)>>> ><<dir.name>></div>
-			<<if (dir.children) {>>
+<|function renderDirs(dir) {|>
+	<|if (dir.dirs) {|>
+		<|dir.dirs.forEach(dir => {|>
+			<div class="item dir <|(dir.selected ? 'selected' : '')|> <|(dir.open ? 'open' : '')|>" 
+				<|on('click', clickDir, dir)|> ><|dir.name|></div>
+			<|if (dir.children) {|>
 				<div class="children">
-					<<renderDirs(children)>>
+					<|renderDirs(children)|>
 				</div>
-			<<}>>
-		<<})>>
-	<<}>>
-	<<if (dir.files) {>>
-		<<dir.files.forEach(file => {>>
-			<div class="item file <<file.active>> <<file.open>>" data-path="<<file.path>>"><<file.name>></div>
-		<<})>>
-	<<}>>
-<<}>>
-<<renderDirs(dir)>>
+			<|}|>
+		<|})|>
+	<|}|>
+	<|if (dir.files) {|>
+		<|dir.files.forEach(file => {|>
+			<div class="item file <|file.active|> <|file.open|>" data-path="<|file.path|>"><|file.name|></div>
+		<|})|>
+	<|}|>
+<|}|>
+<|renderDirs(dir)|>

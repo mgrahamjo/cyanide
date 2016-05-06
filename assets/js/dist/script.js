@@ -9,9 +9,9 @@ var _nav = require('./components/nav');
 
 var _nav2 = _interopRequireDefault(_nav);
 
-var _text = require('./components/text');
+var _editor = require('./components/editor');
 
-var _text2 = _interopRequireDefault(_text);
+var _editor2 = _interopRequireDefault(_editor);
 
 var _tabs = require('./components/tabs');
 
@@ -22,223 +22,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _module2.module)({
 
 	nav: _nav2.default,
-	text: _text2.default,
+	editor: _editor2.default,
 	tabs: _tabs2.default
 
 });
 
 (0, _addKeyboardShortcuts.addKeyboardShortcuts)();
 
-},{"./components/nav":2,"./components/tabs":3,"./components/text":4,"./src/addKeyboardShortcuts":5,"./src/module":10}],2:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _tabs = require('./tabs');
-
-var _tabs2 = _interopRequireDefault(_tabs);
-
-var _text = require('./text');
-
-var _text2 = _interopRequireDefault(_text);
-
-var _loader = require('../src/loader');
-
-var _loader2 = _interopRequireDefault(_loader);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var dirs = {},
-    apply = void 0;
-
-dirs.clickDir = function (dir) {
-
-	console.log(dir);
-
-	dir.open = !dir.open;
-};
-
-// function click(render, el) {
-
-// 	if (el.classList.contains('dir')) {
-
-// 		let path = el.getAttribute('data-path'),
-
-// 			paths = path.split('/'),
-
-// 			thisDir = dirs;
-
-// 		while (paths.length > 0) {
-
-// 			thisDir = thisDir[paths.shift()];
-
-// 			thisDir.open = 'open';
-
-// 		}
-
-// 		thisDir.selected = 'selected';
-
-// 		$.get('/nav?path=' + path, data => {
-
-// 			thisDir.children = data;
-
-// 			console.log(dirs);
-
-// 			render(dirs);
-
-// 		});
-
-// 	}
-
-// }
-
-var nav = {
-
-	init: function init(render) {
-
-		apply = render;
-
-		$.get('/nav', function (data) {
-
-			dirs.dir = data;
-
-			render(dirs);
-		});
-	}
-
-};
-
-// click: click,
-
-// listen: click
-
-exports.default = nav;
-
-},{"../src/loader":8,"./tabs":3,"./text":4}],3:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _text = require('./text');
-
-var _text2 = _interopRequireDefault(_text);
-
-var _nav = require('./nav');
-
-var _nav2 = _interopRequireDefault(_nav);
-
-var _save = require('../src/save');
-
-var _deleteFile = require('../src/deleteFile');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var tabList = [];
-
-var tabs = {
-
-	onEvent: function onEvent(render, el) {
-
-		if (el.classList.contains('close')) {
-			(function () {
-
-				var path = el.parentNode.getAttribute('data-path');
-
-				[].concat(_toConsumableArray(document.querySelectorAll('.file[data-path="' + path + '"]'))).forEach(function (elem) {
-
-					elem.classList.remove('open', 'active');
-				});
-
-				tabList = tabList.filter(function (tab) {
-
-					return tab.path !== path;
-				});
-
-				_text2.default.notify('');
-
-				_nav2.default.notify(document.querySelector('.file.active') || document.querySelector('.file.open'));
-
-				render({ tabs: tabList });
-			})();
-		} else if (el.classList.contains('save')) {
-
-			(0, _save.save)();
-		} else if (el.classList.contains('new-file')) {
-
-			var activeDir = document.querySelector('.dir.selected'),
-			    parentPath = activeDir ? activeDir.getAttribute('data-path') + '/' : '',
-			    fileName = prompt('New file name:');
-
-			if (fileName) {
-
-				_text2.default.notify('');
-
-				[].concat(_toConsumableArray(document.querySelectorAll('.file.active'))).forEach(function (elem) {
-
-					elem.classList.remove('active');
-				});
-
-				tabs.notify(parentPath + fileName, fileName, true);
-			}
-		} else if (el.classList.contains('delete')) {
-
-			(0, _deleteFile.deleteFile)();
-
-			tabList = tabList.filter(function (tab) {
-
-				return tab.class.indexOf('active') === -1;
-			});
-
-			tabs.notify();
-		} else {
-
-			_nav2.default.notify(el);
-		}
-	},
-
-	listen: function listen(render, path, name, isNew) {
-
-		var tabAlreadyOpen = void 0;
-
-		if (path && name) {
-
-			tabList.forEach(function (tab) {
-
-				if (tab.path !== path) {
-
-					tab.class = '';
-				} else {
-
-					tabAlreadyOpen = true;
-
-					tab.class = 'active';
-				}
-			});
-
-			if (!tabAlreadyOpen) {
-
-				tabList.push({
-					name: name,
-					path: path,
-					class: isNew ? 'active new' : 'active'
-				});
-			}
-		}
-
-		render({ tabs: tabList });
-	}
-
-};
-
-exports.default = tabs;
-
-},{"../src/deleteFile":7,"../src/save":11,"./nav":2,"./text":4}],4:[function(require,module,exports){
+},{"./components/editor":2,"./components/nav":3,"./components/tabs":4,"./src/addKeyboardShortcuts":5,"./src/module":9}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -281,24 +72,115 @@ function resetHeight() {
 	el.style.height = height + 'px';
 }
 
-var text = {
+function listen(render, file) {
+
+	_loader2.default.after('.overlay');
+
+	$.get('/open?file=' + file, function (data) {
+
+		el.value = data.data;
+
+		resetHeight();
+
+		_loader2.default.hide();
+	});
+}
+
+exports.default = {
 
 	onEvent: resetHeight,
 
-	listen: function listen(render, data) {
+	listen: listen
 
-		_loader2.default.hide();
+};
 
-		el.value = data;
+},{"../src/loader":7}],3:[function(require,module,exports){
+'use strict';
 
-		resetHeight();
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _tabs = require('./tabs');
+
+var _tabs2 = _interopRequireDefault(_tabs);
+
+var _editor = require('./editor');
+
+var _editor2 = _interopRequireDefault(_editor);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var vm = {
+	selected: '',
+	active: ''
+};
+
+vm.clickDir = function (dir) {
+
+	dir.open = !dir.open;
+
+	vm.selected = dir.path;
+
+	if (!dir.children) {
+
+		return new Promise(function (resolve) {
+
+			$.get('/nav?path=' + dir.path, function (vm) {
+
+				dir.children = vm;
+
+				resolve();
+			});
+		});
+	}
+};
+
+vm.clickFile = function (file) {
+
+	file.open = true;
+
+	vm.active = file.path;
+
+	_editor2.default.notify(file.path);
+};
+
+exports.default = {
+
+	init: function init(render) {
+
+		$.get('/nav', function (data) {
+
+			vm.dir = data;
+
+			render(vm);
+		});
 	}
 
 };
 
-exports.default = text;
+},{"./editor":2,"./tabs":4}],4:[function(require,module,exports){
+"use strict";
 
-},{"../src/loader":8}],5:[function(require,module,exports){
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var vm = {
+
+	tabs: []
+
+};
+
+exports.default = {
+
+	init: function init(render) {
+
+		render(vm);
+	}
+
+};
+
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -356,7 +238,7 @@ function addKeyboardShortcuts() {
 	document.addEventListener('keyup', keyup);
 };
 
-},{"./save":11}],6:[function(require,module,exports){
+},{"./save":10}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -400,56 +282,7 @@ function compile(pathOrSelector) {
 	});
 };
 
-},{"./manila":9}],7:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.deleteFile = deleteFile;
-
-var _text = require('../components/text');
-
-var _text2 = _interopRequireDefault(_text);
-
-var _nav = require('../components/nav');
-
-var _nav2 = _interopRequireDefault(_nav);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var bg = document.querySelector('.background');
-
-function deleteFile() {
-
-	var file = document.querySelector('.file.active'),
-	    path = file.getAttribute('data-path');
-
-	bg.classList.add('blur');
-
-	file.outerHTML = '';
-
-	file = null;
-
-	_text2.default.notify('');
-
-	_nav2.default.notify(document.querySelector('.file.open'));
-
-	$.post('/delete?file=' + path, function (result) {
-
-		if (result.error) {
-
-			alert(result.error);
-
-			console.error(result.error);
-		} else {
-
-			bg.classList.remove('blur');
-		}
-	});
-};
-
-},{"../components/nav":2,"../components/text":4}],8:[function(require,module,exports){
+},{"./manila":8}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -505,7 +338,7 @@ exports.default = {
 
 };
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -520,7 +353,7 @@ var escapeMap = {
 
 function manila(template) {
 
-    return new Function('context', "var p=[];with(context){p.push(`" + template.replace(/\\'/g, "\\\\'").replace(/`/g, "\\`").replace(/\<<<(?!\s*}.*?>>>)(?!.*{\s*>>>)(.*?)>>>/g, "`,(typeof $1==='undefined'?'':$1),`").replace(/\<<<\s*(.*?)\s*>>>/g, "`);$1\np.push(`").replace(/\<<(?!\s*}.*?>>)(?!.*{\s*>>)(.*?)>>/g, "`,(typeof $1==='undefined'?'':manila.e($1)),`").replace(/\<<\s*(.*?)\s*>>/g, "`);$1\np.push(`") + "`);}return p.join('');");
+    return new Function('context', "var p=[];with(context){p.push(`" + template.replace(/\\'/g, "\\\\'").replace(/`/g, "\\`").replace(/\<--(?!\s*}.*?-->)(?!.*{\s*-->)(.*?)-->/g, "`,$1,`").replace(/\<--\s*(.*?)\s*-->/g, "`);$1\np.push(`").replace(/\<-(?!\s*}.*?->)(?!.*{\s*->)(.*?)->/g, "`,manila.e($1),`").replace(/\<-\s*(.*?)\s*->/g, "`);$1\np.push(`") + "`);}return p.join('');");
 }
 
 function esc(str) {
@@ -533,10 +366,8 @@ function esc(str) {
 
 function e(val) {
 
-    return typeof val === 'string' ? manila.esc(val) : val;
+    return typeof val === 'string' ? esc(val) : val;
 }
-
-manila.esc = esc;
 
 manila.e = e;
 
@@ -544,7 +375,7 @@ window.manila = manila;
 
 exports.manila = manila;
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -556,9 +387,7 @@ var _compile = require('./compile');
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-window.component = {};
-
-window.handlers = {};
+window.manila.handlers = {};
 
 function _module(modules) {
 
@@ -570,13 +399,14 @@ function _module(modules) {
 
 		(0, _compile.compile)(el.getAttribute('data-template')).then(function (render) {
 
-			function resolve(data) {
+			function resolve() {
+				var data = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 				var target = arguments.length <= 1 || arguments[1] === undefined ? el : arguments[1];
 
 
 				var index = 0;
 
-				window.handlers[componentName] = [];
+				window.manila.handlers[componentName] = [];
 
 				data.on = function (event, handler) {
 					for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
@@ -585,16 +415,28 @@ function _module(modules) {
 
 					var eventString = void 0;
 
-					window.handlers[componentName][index] = function (e) {
+					window.manila.handlers[componentName][index] = function (e) {
+
+						var promise = void 0;
+
+						e.stopPropagation();
 
 						args.push(e);
 
-						handler.apply(data, args);
+						promise = handler.apply(data, args);
 
-						resolve(data);
+						if (promise && typeof promise.then === 'function') {
+
+							promise.then(function () {
+								resolve(data);
+							});
+						} else {
+
+							resolve(data);
+						}
 					};
 
-					eventString = 'on' + event + '="handlers.' + componentName + '[' + index + ']()"';
+					eventString = 'on' + event + '=manila.handlers.' + componentName + '[' + index + '](event)';
 
 					index++;
 
@@ -639,7 +481,7 @@ function _module(modules) {
 }exports.module = _module;
 ;
 
-},{"./compile":6}],11:[function(require,module,exports){
+},{"./compile":6}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -699,4 +541,4 @@ function save() {
 	}
 };
 
-},{"../components/nav":2}]},{},[1]);
+},{"../components/nav":3}]},{},[1]);

@@ -36,20 +36,26 @@ function resetHeight() {
 
 }
 
-const text = {
+function listen(render, file) {
 
-	onEvent: resetHeight,
+	loader.after('.overlay');
 
-	listen: (render, data) => {
+	$.get('/open?file=' + file, data => {
 
-		loader.hide();
-
-		el.value = data;
+		el.value = data.data;
 
 		resetHeight();
 
-	}
+		loader.hide();
+
+	});
+
+}
+
+export default {
+
+	onEvent: resetHeight,
+
+	listen: listen
 
 };
-
-export default text;

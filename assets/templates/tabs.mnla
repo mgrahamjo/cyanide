@@ -1,11 +1,11 @@
-<<tabs.forEach(tab => {>>
+<|tabs.forEach(tab => {|>
 
-	<div class="tab file <<tab.class>>" data-path="<<tab.path>>">
-		<<tab.name>>
+	<div class="tab file <|tab.class|>" data-path="<|tab.path|>">
+		<|tab.name|>
 		<a class="close"/></a>
 	</div>
 
-<<})>>
+<|})|>
 
 <input type="checkbox" class="menu-toggle"/>
 <div class="nav">

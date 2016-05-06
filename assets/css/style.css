@@ -20,29 +20,29 @@ nav {
 }
 
 .item {
-  padding: 4px 15px;
-  cursor: pointer;
-  transition: color 0.3s;
+    cursor: pointer;
+}
+
+.dir, .file {
+    padding: 4px 15px;
+    color: #C8D4E0;
+    overflow: hidden;
+    height: 1em;
+}
+
+.dir.open {
+    height: auto;
 }
 
 .file.open {
     color: #DAA371;
 }
 
-.file.active, .dir.selected {
+.file.open.active, .dir.open.selected {
     color: #FF9B40;
 }
 
-.children {
-  display: none;
-}
-
-.open + .children {
-  display: block;
-  margin-left: 10px;
-}
-
-.item:not(.selected):not(.active):hover {
+.item:hover {
   color: white;
 }
 
@@ -92,7 +92,7 @@ nav {
     margin-top: 35px;
 }
 
-.dir:after {
+.folder:after {
     content: '/';
 }
 

@@ -11,16 +11,16 @@ module.exports = (req, res) => {
 
 		item = item[item.length - 1];
 
-		let dir = req.query.dir ? `${req.query.dir}/${item}` : item;
+		let path = req.query.path ? `${req.query.path}/${item}` : item;
 
 		return {
 			name: item,
-			path: dir
+			path: path
 		};
 			
 	}
 	
-	util.exec('ls -al', req.query.dir).then(all => {
+	util.exec('ls -al', req.query.path).then(all => {
 
 		all = all.stdout.split('\n');
 

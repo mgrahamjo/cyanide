@@ -7,17 +7,46 @@
 </head>
 <body>
 
-<nav data-component="nav" data-template="/assets/templates/nav.mnla"></nav>
+<nav data-component="nav" data-template="#nav-template">
+<script type="text/template" id="nav-template">
+<-function renderDirs(d) {->
+	<-if (d.dirs) {->
+		<-d.dirs.forEach(d => {->
+			<div class="dir<-selected===d.path ? ' selected' : ''-><-d.open ? ' open' : ''->" <-on('click', clickDir, d)->>
+				<div class="item"><span class="folder"><-d.name-></span></div>
+				<-if (d.children) {->
+					<-renderDirs(d.children)->
+				<-}->
+			</div>
+		<-})->
+	<-}->
+	<-if (d.files) {->
+		<-d.files.forEach(f => {->
+			<div class="item file<-active===f.path ? ' active' : ''-><-f.open ? ' open' : ''->" <-on('click', clickFile, f)->>
+				<-f.name->
+			</div>
+		<-})->
+	<-}->
+<-}->
+<-renderDirs(dir)->
+</script>
+</nav>
 
 <div class="background">
 
 	<div class="overlay"></div>
 
-	<div class="tabs"
-		data-component="tabs"
-		data-template="/assets/templates/tabs.mnla"
-		data-events="click"
-	>
+	<div class="tabs" data-component="tabs" data-template="#tabs-template">
+		<script type="text/template" id="tabs-template">
+		<-tabs.forEach(tab => {->
+
+			<div class="tab file <-tab.class->" data-path="<-tab.path->">
+				<-tab.name->
+				<a class="close"/></a>
+			</div>
+
+		<-})->
+
 		<input type="checkbox" class="menu-toggle"/>
 		<div class="nav">
 			<a class="save">Save</a>
@@ -29,15 +58,16 @@
 			<div class="bar"></div>
 			<div class="bar"></div>
 		</div>
+		</script>
 	</div>
 
 	<div class="numbers"></div>
 
-	<textarea class="text" data-component="text" data-events="input"></textarea>
+	<textarea class="text" data-component="editor"></textarea>
 
 </div>
 
-<script id="loader-template" type="text/template">
+<script type="text/template" id="loader-template">
 	<div class="loader">
 	  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	     width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">

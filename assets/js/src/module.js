@@ -1,8 +1,6 @@
 import { compile } from './compile';
 
-window.component = {};
-
-window.handlers = {};
+window.manila.handlers = {};
 
 export function module(modules) {
 
@@ -16,33 +14,47 @@ export function module(modules) {
 		
 		compile( el.getAttribute('data-template') ).then(render => {
 
-			function resolve(data, target = el) {
+			function resolve(data = {}, target = el) {
 
 				let index = 0;
 
-				window.handlers[componentName] = [];
+				window.manila.handlers[componentName] = [];
 
 				data.on = (event, handler, ...args) => {
 
 					let eventString;
 
-					window.handlers[componentName][index] = e => {
+					window.manila.handlers[componentName][index] = e => {
 
+						let promise;
+
+						e.stopPropagation();
+						
 						args.push(e);
 
-						handler.apply(data, args);
+						promise = handler.apply(data, args);
 
-						resolve(data);
+						if (promise && typeof promise.then === 'function') {
+
+							promise.then(() => {
+								resolve(data);
+							});
+
+						} else {
+
+							resolve(data);
+
+						}
 
 					};
 
-					eventString = `on${event}="handlers.${componentName}[${index}]()"`;
+					eventString = `on${event}=manila.handlers.${componentName}[${index}](event)`;
 
 					index++;
 
 					return eventString;
 
-				}
+				};
 
 				target.innerHTML = render(data);
 

@@ -1,73 +1,57 @@
 import tabs from './tabs';
-import text from './text';
-import loader from '../src/loader';
+import editor from './editor';
 
-let dirs = {},
-	
-	apply;
+let vm = {
+	selected: '',
+	active: ''
+};
 
-dirs.clickDir = dir => {
-
-	console.log(dir);
+vm.clickDir = dir => {
 
 	dir.open = !dir.open;
 
-};
+	vm.selected = dir.path;
 
-// function click(render, el) {
+	if (!dir.children) {
 
-// 	if (el.classList.contains('dir')) {
+		return new Promise(resolve => {
 
-// 		let path = el.getAttribute('data-path'),
+			$.get('/nav?path=' + dir.path, vm => {
 
-// 			paths = path.split('/'),
+				dir.children = vm;
 
-// 			thisDir = dirs;
+				resolve();
 
-// 		while (paths.length > 0) {
-
-// 			thisDir = thisDir[paths.shift()];
-
-// 			thisDir.open = 'open';
-
-// 		}
-
-// 		thisDir.selected = 'selected';
-
-// 		$.get('/nav?path=' + path, data => {
-
-// 			thisDir.children = data;
-
-// 			console.log(dirs);
-
-// 			render(dirs);
-
-// 		});
-
-// 	}
-
-// }
-
-let nav = {
-
-	init: render => {
-
-		apply = render;
-
-		$.get('/nav', data => {
-
-			dirs.dir = data;
-
-			render(dirs);
+			});
 
 		});
 
-	},
-
-	// click: click,
-
-	// listen: click
+	}
 
 };
 
-export default nav;
+vm.clickFile = file => {
+
+	file.open = true;
+
+	vm.active = file.path;
+
+	editor.notify(file.path);
+
+};
+
+export default {
+
+	init: render => {
+
+		$.get('/nav', data => {
+
+			vm.dir = data;
+
+			render(vm);
+
+		});
+
+	}
+
+};
