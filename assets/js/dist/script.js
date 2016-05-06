@@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _addKeyboardShortcuts.addKeyboardShortcuts)();
 
-},{"./components/editor":2,"./components/nav":3,"./components/tabs":4,"./src/addKeyboardShortcuts":5,"./src/module":9}],2:[function(require,module,exports){
+},{"./components/editor":2,"./components/nav":3,"./components/tabs":4,"./src/addKeyboardShortcuts":5,"./src/module":10}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -72,48 +72,55 @@ function resetHeight() {
 	el.style.height = height + 'px';
 }
 
-function listen(render, file) {
+function update(data) {
+
+	el.value = data;
+
+	resetHeight();
+
+	_loader2.default.hide();
+}
+
+function listen(render, path) {
 
 	_loader2.default.after('.overlay');
 
-	$.get('/open?file=' + file, function (data) {
+	if (path) {
 
-		el.value = data.data;
+		$.get('/open?file=' + path, function (data) {
 
-		resetHeight();
+			update(data.data);
+		});
+	} else {
 
-		_loader2.default.hide();
-	});
+		update('');
+	}
 }
 
 exports.default = {
 
 	onEvent: resetHeight,
-
 	listen: listen
 
 };
 
-},{"../src/loader":7}],3:[function(require,module,exports){
+},{"../src/loader":8}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _tabs = require('./tabs');
+var _fileManager = require('../src/fileManager');
 
-var _tabs2 = _interopRequireDefault(_tabs);
-
-var _editor = require('./editor');
-
-var _editor2 = _interopRequireDefault(_editor);
+var _fileManager2 = _interopRequireDefault(_fileManager);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var vm = {
 	selected: '',
-	active: ''
+	active: '',
+	open: {}
 };
 
 vm.clickDir = function (dir) {
@@ -126,9 +133,9 @@ vm.clickDir = function (dir) {
 
 		return new Promise(function (resolve) {
 
-			$.get('/nav?path=' + dir.path, function (vm) {
+			$.get('/nav?path=' + dir.path, function (data) {
 
-				dir.children = vm;
+				dir.children = data;
 
 				resolve();
 			});
@@ -138,12 +145,23 @@ vm.clickDir = function (dir) {
 
 vm.clickFile = function (file) {
 
-	file.open = true;
-
-	vm.active = file.path;
-
-	_editor2.default.notify(file.path);
+	_fileManager2.default.open(file);
 };
+
+function listen(render, path, open) {
+
+	if (open) {
+
+		vm.open[path] = path;
+
+		vm.active = path;
+	} else {
+
+		delete vm.open[path];
+	}
+
+	render(vm);
+}
 
 exports.default = {
 
@@ -155,32 +173,76 @@ exports.default = {
 
 			render(vm);
 		});
-	}
+	},
+
+	listen: listen
 
 };
 
-},{"./editor":2,"./tabs":4}],4:[function(require,module,exports){
-"use strict";
+},{"../src/fileManager":7}],4:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+var _fileManager = require('../src/fileManager');
+
+var _fileManager2 = _interopRequireDefault(_fileManager);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var vm = {
 
-	tabs: []
+	tabs: {}
 
 };
+
+vm.close = function (path) {
+
+	delete vm.tabs[path];
+
+	_fileManager2.default.close({
+		path: path,
+		name: vm.tabs[path]
+	});
+};
+
+vm.open = function (path) {
+
+	_fileManager2.default.open({
+		path: path,
+		name: vm.tabs[path]
+	});
+};
+
+function listen(render, file, open) {
+
+	if (open) {
+
+		vm.active = file.path;
+
+		vm.tabs[file.path] = file.name;
+	} else {
+
+		delete vm.tabs[file.path];
+	}
+
+	render(vm);
+}
 
 exports.default = {
 
 	init: function init(render) {
 
 		render(vm);
-	}
+	},
+
+	listen: listen
 
 };
 
-},{}],5:[function(require,module,exports){
+},{"../src/fileManager":7}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -238,7 +300,7 @@ function addKeyboardShortcuts() {
 	document.addEventListener('keyup', keyup);
 };
 
-},{"./save":10}],6:[function(require,module,exports){
+},{"./save":11}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -282,7 +344,68 @@ function compile(pathOrSelector) {
 	});
 };
 
-},{"./manila":8}],7:[function(require,module,exports){
+},{"./manila":9}],7:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _tabs = require('../components/tabs');
+
+var _tabs2 = _interopRequireDefault(_tabs);
+
+var _editor = require('../components/editor');
+
+var _editor2 = _interopRequireDefault(_editor);
+
+var _nav = require('../components/nav');
+
+var _nav2 = _interopRequireDefault(_nav);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var openFiles = {};
+
+function open(file) {
+
+	_editor2.default.notify(file.path);
+
+	_nav2.default.notify(file.path, true);
+
+	_tabs2.default.notify(file, true);
+
+	openFiles[file.path] = file;
+}
+
+function close(file) {
+
+	var openList = void 0;
+
+	_editor2.default.notify('');
+
+	_nav2.default.notify(file.path, false);
+
+	_tabs2.default.notify(file, false);
+
+	delete openFiles[file.path];
+
+	openList = Object.keys(openFiles);
+
+	if (openList.length) {
+
+		open(openFiles[openList[openList.length - 1]]);
+	}
+}
+
+exports.default = {
+
+	open: open,
+	close: close
+
+};
+
+},{"../components/editor":2,"../components/nav":3,"../components/tabs":4}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -338,7 +461,7 @@ exports.default = {
 
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -375,7 +498,7 @@ window.manila = manila;
 
 exports.manila = manila;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -481,7 +604,7 @@ function _module(modules) {
 }exports.module = _module;
 ;
 
-},{"./compile":6}],10:[function(require,module,exports){
+},{"./compile":6}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

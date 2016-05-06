@@ -1,9 +1,9 @@
-import tabs from './tabs';
-import editor from './editor';
+import fileManager from '../src/fileManager';
 
 let vm = {
 	selected: '',
-	active: ''
+	active: '',
+	open: {}
 };
 
 vm.clickDir = dir => {
@@ -16,9 +16,9 @@ vm.clickDir = dir => {
 
 		return new Promise(resolve => {
 
-			$.get('/nav?path=' + dir.path, vm => {
+			$.get('/nav?path=' + dir.path, data => {
 
-				dir.children = vm;
+				dir.children = data;
 
 				resolve();
 
@@ -32,13 +32,27 @@ vm.clickDir = dir => {
 
 vm.clickFile = file => {
 
-	file.open = true;
-
-	vm.active = file.path;
-
-	editor.notify(file.path);
+	fileManager.open(file);
 
 };
+
+function listen(render, path, open) {
+
+	if (open) {
+
+		vm.open[path] = path;
+
+		vm.active = path;
+
+	} else {
+
+		delete vm.open[path];
+
+	}
+
+	render(vm);
+
+}
 
 export default {
 
@@ -52,6 +66,8 @@ export default {
 
 		});
 
-	}
+	},
+
+	listen: listen
 
 };

@@ -36,26 +36,39 @@ function resetHeight() {
 
 }
 
-function listen(render, file) {
+function update(data) {
+
+	el.value = data;
+
+	resetHeight();
+
+	loader.hide();
+
+}
+
+function listen(render, path) {
 
 	loader.after('.overlay');
 
-	$.get('/open?file=' + file, data => {
+	if (path) {
 
-		el.value = data.data;
+		$.get('/open?file=' + path, data => {
 
-		resetHeight();
+			update(data.data);
 
-		loader.hide();
+		});
 
-	});
+	} else {
+
+		update('');
+
+	}
 
 }
 
 export default {
 
 	onEvent: resetHeight,
-
 	listen: listen
 
 };

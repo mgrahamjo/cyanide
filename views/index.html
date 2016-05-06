@@ -22,7 +22,7 @@
 	<-}->
 	<-if (d.files) {->
 		<-d.files.forEach(f => {->
-			<div class="item file<-active===f.path ? ' active' : ''-><-f.open ? ' open' : ''->" <-on('click', clickFile, f)->>
+			<div class="item file<-active===f.path ? ' active' : ''-><-open[f.path] ? ' open' : ''->" <-on('click', clickFile, f)->>
 				<-f.name->
 			</div>
 		<-})->
@@ -38,15 +38,12 @@
 
 	<div class="tabs" data-component="tabs" data-template="#tabs-template">
 		<script type="text/template" id="tabs-template">
-		<-tabs.forEach(tab => {->
-
-			<div class="tab file <-tab.class->" data-path="<-tab.path->">
-				<-tab.name->
-				<a class="close"/></a>
+		<-for (var path in tabs) {->
+			<div class="tab file<-active===path ? ' active' : ''->" <-on('click', open, path)->>
+				<-tabs[path]->
+				<a class="close" <-on('click', close, path)->></a>
 			</div>
-
-		<-})->
-
+		<-}->
 		<input type="checkbox" class="menu-toggle"/>
 		<div class="nav">
 			<a class="save">Save</a>
