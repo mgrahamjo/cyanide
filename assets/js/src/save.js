@@ -1,4 +1,5 @@
 import nav from '../components/nav';
+import ajax from '../src/ajax';
 
 export function save() {
 
@@ -14,7 +15,7 @@ export function save() {
 
 		path = activeFile.getAttribute('data-path');
 
-		$.post(
+		ajax.post(
 
 			'/save?file=' + path,
 

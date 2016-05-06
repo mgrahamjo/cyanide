@@ -1,4 +1,5 @@
 import fileManager from '../src/fileManager';
+import ajax from '../src/ajax';
 
 let vm = {
 	selected: '',
@@ -16,9 +17,9 @@ vm.clickDir = dir => {
 
 		if (!dir.children) {
 
-			$.get('/nav?path=' + dir.path, data => {
+			ajax.get('/nav?path=' + dir.path, data => {
 
-				dir.children = data;
+				dir.children = data.dir;
 
 				resolve(vm);
 
@@ -68,13 +69,9 @@ export default {
 
 		return new Promise(resolve => {
 
-			$.get('/nav', data => {
+			vm.dir = JSON.parse(window.manila.json).nav.dir;
 
-				vm.dir = data;
-
-				resolve(vm);
-
-			});
+			resolve(vm);
 
 		});
 

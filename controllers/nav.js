@@ -37,8 +37,10 @@ module.exports = (req, res) => {
 		}).map(process);
 
 		res.json({
-			dirs: dirs,
-			files: files
+			dir: {
+				dirs: dirs,
+				files: files
+			}
 		});
 
 	});

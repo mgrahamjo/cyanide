@@ -16,6 +16,8 @@ const express = require('express'),
 
 	util = require('./util'),
 
+	mnla = require('mnla')(),
+
 	promptConfig = {
 		properties: {
 			password: {
@@ -44,6 +46,7 @@ function connect() {
 		});
 
 	}).catch(console.error);
+
 }
 
 
@@ -54,6 +57,7 @@ function handleInput(err, result) {
 	connect();
 
 	prompt.stop();
+
 }
 
 
@@ -70,14 +74,20 @@ fs.readFile('./config2.json', (err, json) => {
 		prompt.get(promptConfig, handleInput);
 	
 	} else {
+
 		connect();
+
 	}
+
 });
 
 app
 	.use(express.static('assets'))
 	.use('/assets', express.static('assets'))
-
+	.use('/node_modules/mnla', express.static('node_modules/mnla'))
+	.engine('mnla', mnla)
+	.set('view engine', 'mnla')
+	.set('views', './views')
 	.get('/', require('./controllers/index'))
 	.get('/nav', require('./controllers/nav'))
 	.get('/open', require('./controllers/open'))

@@ -1,4 +1,5 @@
 import loader from '../src/loader';
+import ajax from '../src/ajax';
 
 let numbers = document.querySelector('.numbers'),
 
@@ -54,7 +55,7 @@ function listen(path) {
 
 		if (path) {
 
-			$.get('/open?file=' + path, data => {
+			ajax.get('/open?file=' + path, data => {
 
 				resolve(update(data.data));
 

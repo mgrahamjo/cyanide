@@ -1,9 +1,21 @@
 'use strict';
 
-const path = require('path');
+const 
+	mnla = require('mnla/server'),
+	nav = require('./nav');
 
 module.exports = (req, res) => {
 
-	res.sendFile(path.join(__dirname, '../views/index.html'));
+	mnla({
+
+		nav: nav,
+		tabs: null,
+		editor: null
+
+	}).then(data => {
+
+		res.render('index', data);
+
+	});
 	
 };
