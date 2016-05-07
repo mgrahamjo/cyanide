@@ -1,34 +1,31 @@
 import fileManager from '../src/fileManager';
+import manila from 'mnla/client';
 
-let vm = {
+manila.component('tabs', vm => {
 
-	tabs: {}
+	vm.tabs = {};
 
-};
+	vm.close = path => {
 
-vm.close = path => {
+		delete vm.tabs[path];
 
-	delete vm.tabs[path];
+		fileManager.close({
+			path: path,
+			name: vm.tabs[path]
+		});
 
-	fileManager.close({
-		path: path,
-		name: vm.tabs[path]
-	});
+	};
 
-};
+	vm.open = path => {
 
-vm.open = path => {
+		fileManager.open({
+			path: path,
+			name: vm.tabs[path]
+		});
 
-	fileManager.open({
-		path: path,
-		name: vm.tabs[path]
-	});
+	};
 
-};
-
-function listen(file, open) {
-
-	return new Promise(resolve => {
+	return (file, open) => {
 
 		if (open) {
 
@@ -42,24 +39,6 @@ function listen(file, open) {
 
 		}
 
-		resolve(vm);
+	}
 
-	});
-
-}
-
-export default {
-	
-	init: () => {
-
-		return new Promise(resolve => {
-
-			resolve(vm);
-
-		});
-
-	},
-
-	listen: listen
-
-};
+});

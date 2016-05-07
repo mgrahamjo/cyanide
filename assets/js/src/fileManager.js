@@ -1,16 +1,14 @@
-import tabs from '../components/tabs';
-import editor from '../components/editor';
-import nav from '../components/nav';
+import manila from 'mnla/client';
 
 let openFiles = {};
 
 function open(file) {
 
-	editor.notify(file.path);
+	manila.notify('editor', file.path);
 
-	nav.notify(file.path, true);
+	manila.notify('nav', file.path, true);
 
-	tabs.notify(file, true);
+	manila.notify('tabs', file, true);
 
 	openFiles[file.path] = file;
 
@@ -20,11 +18,11 @@ function close(file) {
 
 	let openList;
 
-	editor.notify('');
+	manila.notify('editor', '');
 
-	nav.notify(file.path, false);
-
-	tabs.notify(file, false);
+	manila.notify('nav', file.path, false);
+	
+	manila.notify('tabs', file, false);
 
 	delete openFiles[file.path];
 
@@ -37,6 +35,40 @@ function close(file) {
 	}
 
 }
+
+// function open(file) {
+
+// 	editor.notify(file.path);
+
+// 	nav.notify(file.path, true);
+
+// 	tabs.notify(file, true);
+
+// 	openFiles[file.path] = file;
+
+// }
+
+// function close(file) {
+
+// 	let openList;
+
+// 	editor.notify('');
+
+// 	nav.notify(file.path, false);
+
+// 	tabs.notify(file, false);
+
+// 	delete openFiles[file.path];
+
+// 	openList = Object.keys(openFiles);
+
+// 	if (openList.length) {
+
+// 		open(openFiles[openList[openList.length - 1]]);
+
+// 	}
+
+// }
 
 export default {
 

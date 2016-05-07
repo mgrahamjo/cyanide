@@ -49,7 +49,6 @@
 
 <--client-->
 
-<script src="/node_modules/mnla/dist.js"></script>
 <script src="/assets/js/dist/script.js"></script>
 </body>
 </html>

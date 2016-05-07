@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "browserify assets/js/app.js -o assets/js/dist/script.js -t [ babelify --presets [ es2015 ] ] --debug",
-    "build": "browserify assets/js/app.js -o assets/js/dist/script.js -t [ babelify --presets [ es2015 ] ]",
+    "dev": "browserify assets/js/app.js -o assets/js/dist/script.js --global-transform [ babelify --presets [ es2015 ] ] --debug",
+    "build": "browserify assets/js/app.js -o assets/js/dist/script.js --global-transform [ babelify --presets [ es2015 ] ]",
     "watch": "npm-watch"
   },
   "author": "",

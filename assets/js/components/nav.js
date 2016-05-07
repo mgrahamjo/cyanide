@@ -1,15 +1,12 @@
 import fileManager from '../src/fileManager';
 import ajax from '../src/ajax';
+import manila from 'mnla/client';
 
-let vm = {
-	selected: '',
-	active: '',
-	open: {}
-};
+manila.component('nav', vm => {
 
-vm.clickDir = dir => {
+	vm.open = {};
 
-	return new Promise(resolve => {
+	vm.clickDir = dir => {
 
 		dir.open = !dir.open;
 
@@ -21,29 +18,21 @@ vm.clickDir = dir => {
 
 				dir.children = data.dir;
 
-				resolve(vm);
+				vm.render();
 
 			});
 
-		} else {
-
-			resolve(vm);
-
 		}
 
-	});
+	};
 
-};
+	vm.clickFile = file => {
 
-vm.clickFile = file => {
+		fileManager.open(file);
 
-	fileManager.open(file);
+	};
 
-};
-
-function listen(path, open) {
-
-	return new Promise(resolve => {
+	return (path, open) => {
 
 		if (open) {
 
@@ -57,26 +46,84 @@ function listen(path, open) {
 
 		}
 
-		resolve(vm);
+	};
 
-	});
+});
 
-}
+// let vm = {
+// 	open: {}
+// };
 
-export default {
+// vm.clickDir = dir => {
 
-	init: () => {
+// 	return new Promise(resolve => {
 
-		return new Promise(resolve => {
+// 		dir.open = !dir.open;
 
-			vm.dir = JSON.parse(window.manila.json).nav.dir;
+// 		vm.selected = dir.path;
 
-			resolve(vm);
+// 		if (!dir.children) {
 
-		});
+// 			ajax.get('/nav?path=' + dir.path, data => {
 
-	},
+// 				dir.children = data.dir;
 
-	listen: listen
+// 				resolve(vm);
 
-};
+// 			});
+
+// 		} else {
+
+// 			resolve(vm);
+
+// 		}
+
+// 	});
+
+// };
+
+// vm.clickFile = file => {
+
+// 	fileManager.open(file);
+
+// };
+
+// function listen(path, open) {
+
+// 	return new Promise(resolve => {
+
+// 		if (open) {
+
+// 			vm.open[path] = path;
+
+// 			vm.active = path;
+
+// 		} else {
+
+// 			delete vm.open[path];
+
+// 		}
+
+// 		resolve(vm);
+
+// 	});
+
+// }
+
+// export default {
+
+// 	init: () => {
+
+// 		return new Promise(resolve => {
+
+// 			vm.dir = window.manila.data.nav.dir;
+
+// 			resolve(vm);
+
+// 		});
+
+// 	},
+
+// 	listen: listen
+
+// };

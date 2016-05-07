@@ -84,7 +84,7 @@ fs.readFile('./config2.json', (err, json) => {
 app
 	.use(express.static('assets'))
 	.use('/assets', express.static('assets'))
-	.use('/node_modules/mnla', express.static('node_modules/mnla'))
+	//.use('/node_modules/mnla', express.static('node_modules/mnla'))
 	.engine('mnla', mnla)
 	.set('view engine', 'mnla')
 	.set('views', './views')

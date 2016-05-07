@@ -1,12 +1,12 @@
 'use strict';
 
 const 
-	mnla = require('mnla/server'),
+	manila = require('mnla/server'),
 	nav = require('./nav');
 
 module.exports = (req, res) => {
 
-	mnla({
+	manila({
 
 		nav: nav,
 		tabs: null,

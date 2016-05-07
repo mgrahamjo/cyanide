@@ -1,55 +1,52 @@
 import loader from '../src/loader';
 import ajax from '../src/ajax';
+import manila from 'mnla/client';
 
-let numbers = document.querySelector('.numbers'),
+manila.component('editor', vm => {
 
-	vm = {
-		text: ''
-	};
+	let numbers = document.querySelector('.numbers');
 
-vm.resetHeight = e => {
+	vm.resetHeight = e => {
 
-	let el = document.querySelector('.text'),
+		let el = document.querySelector('.text'),
 
-		height;
+			height;
 
-	el.style.height = '';
+		el.style.height = '';
 
-	height = el.scrollHeight;
+		height = el.scrollHeight;
 
-	numbers.style.height = '';
+		numbers.style.height = '';
 
-	if (numbers.clientHeight < height) {
+		if (numbers.clientHeight < height) {
 
-		while (numbers.clientHeight < height) {
+			while (numbers.clientHeight < height) {
 
-			numbers.innerHTML += '<div class="num"></div>';
+				numbers.innerHTML += '<div class="num"></div>';
+
+			}
+
+		} else {
+
+			numbers.style.height = height + 'px';
 
 		}
 
-	} else {
+		el.style.height = height + 'px';
 
-		numbers.style.height = height + 'px';
+	};
+
+	function update(text) {
+
+		vm.text = text;
+
+		loader.hide();
+
+		vm.render();
 
 	}
 
-	el.style.height = height + 'px';
-
-};
-
-function update(text) {
-
-	vm.text = text;
-
-	loader.hide();
-
-	return vm;
-
-}
-
-function listen(path) {
-
-	return new Promise(resolve => {
+	return path => {
 
 		loader.after('.overlay');
 
@@ -57,7 +54,7 @@ function listen(path) {
 
 			ajax.get('/open?file=' + path, data => {
 
-				resolve(update(data.data));
+				update(data.data);
 
 				vm.resetHeight();
 
@@ -65,28 +62,12 @@ function listen(path) {
 
 		} else {
 
-			resolve(update(''));
+			update('');
 
 			vm.resetHeight();
 
 		}
 
-	});
+	}
 
-}
-
-export default {
-
-	init: () => {
-
-		return new Promise(resolve => {
-
-			resolve(vm);
-
-		});
-
-	},
-
-	listen: listen
-
-};
+});
