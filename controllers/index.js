@@ -12,7 +12,7 @@ module.exports = (req, res) => {
 		tabs: null,
 		editor: null
 
-	}).then(data => {
+	}, req, res).then(data => {
 
 		res.render('index', data);
 

@@ -1,23 +1,23 @@
 <!doctype html>
 <html>
 <head>
-<title>KVM</title>
+<title>MNLA</title>
 <link rel="stylesheet" href="/assets/css/style.css" />
 <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-<--server.nav-->
+<--component.nav-->
 
 <div class="background">
 
 	<div class="overlay"></div>
 
-	<--server.tabs-->
+	<--component.tabs-->
 
 	<div class="numbers"></div>
 
-	<--server.editor-->
+	<--component.editor-->
 
 </div>
 
@@ -47,7 +47,7 @@
 	</div>
 </script>
 
-<--client-->
+<--clientData-->
 
 <script src="/assets/js/dist/script.js"></script>
 </body>

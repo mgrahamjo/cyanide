@@ -50,9 +50,5 @@ function keyup(e) {
 }
 
 
-export function addKeyboardShortcuts() {
-	
-	document.addEventListener('keydown', keydown);
-	document.addEventListener('keyup', keyup);
-
-};
+document.addEventListener('keydown', keydown);
+document.addEventListener('keyup', keyup);
