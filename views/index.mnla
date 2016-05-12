@@ -7,17 +7,17 @@
 </head>
 <body>
 
-<--component.nav-->
+<::component.nav::>
 
 <div class="background">
 
 	<div class="overlay"></div>
 
-	<--component.tabs-->
+	<::component.tabs::>
 
 	<div class="numbers"></div>
 
-	<--component.editor-->
+	<::component.editor::>
 
 </div>
 
@@ -47,7 +47,7 @@
 	</div>
 </script>
 
-<--clientData-->
+<::clientData::>
 
 <script src="/assets/js/dist/script.js"></script>
 </body>

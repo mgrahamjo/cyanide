@@ -1,9 +1,9 @@
-<-for (var path in tabs) {->
-	<div class="tab file<-active===path ? ' active' : ''->" <-on('click', open, path)->>
-		<-tabs{path}->
-		<a class="close" <-on('click', close, path)->></a>
+<:for (var path in tabs) {:>
+	<div class="tab file<:active===path ? ' active' : '':>" <:on('click', open, path):>>
+		<:tabs[path]:>
+		<a class="close" <:on('click', close, path):>></a>
 	</div>
-<-}->
+<:}:>
 <input type="checkbox" class="menu-toggle"/>
 <div class="nav">
 	<a class="save">Save</a>

@@ -1,1 +1,1 @@
-<textarea class="text" <-on('input', resetHeight)->><-text-></textarea>
+<textarea class="text" <:on('input', resetHeight):>><:text:></textarea>
