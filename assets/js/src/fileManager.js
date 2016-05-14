@@ -4,11 +4,11 @@ let openFiles = {};
 
 function open(file) {
 
-	manila.notify('editor', file.path);
+	manila.components.editor.update(file.path);
 
-	manila.notify('nav', file.path, true);
+	manila.components.nav.update(file.path, true);
 
-	manila.notify('tabs', file, true);
+	manila.components.tabs.update(file, true);
 
 	openFiles[file.path] = file;
 
@@ -18,11 +18,11 @@ function close(file) {
 
 	let openList;
 
-	manila.notify('editor', '');
+	manila.components.editor.update('');
 
-	manila.notify('nav', file.path, false);
+	manila.components.nav.update(file.path, false);
 	
-	manila.notify('tabs', file, false);
+	manila.components.tabs.update(file, false);
 
 	delete openFiles[file.path];
 

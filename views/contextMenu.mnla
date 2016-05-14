@@ -1,0 +1,15 @@
+<div class="context-menu<: visible ? '  visible' : '':>" style="left: <:left:>px; top: <:top:>px">
+
+	<div class="option" <:on('click', rename):>>Rename</div>
+
+	<div class="option" <:on('click', deletePath):>>Delete</div>
+	
+	<: if (!file) { :>
+
+		<div class="option" <:on('click', newFile):>>New File</div>
+
+		<div class="option" <:on('click', newDir):>>New Folder</div>
+
+	<:}:>
+
+</div>

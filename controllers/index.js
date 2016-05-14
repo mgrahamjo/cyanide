@@ -10,7 +10,8 @@ module.exports = (req, res) => {
 
 		nav: nav,
 		tabs: null,
-		editor: null
+		editor: null,
+		contextMenu: null
 
 	}, req, res).then(data => {
 

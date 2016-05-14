@@ -92,4 +92,7 @@ app
 	.get('/nav', require('./controllers/nav'))
 	.get('/open', require('./controllers/open'))
 	.post('/save', bodyParser, require('./controllers/save'))
+	.post('/rename', bodyParser, require('./controllers/rename'))
+	.post('/new-file', bodyParser, require('./controllers/newFile'))
+	.post('/new-dir', bodyParser, require('./controllers/newDir'))
 	.post('/delete', require('./controllers/delete'));

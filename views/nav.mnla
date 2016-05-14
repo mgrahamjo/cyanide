@@ -1,19 +1,23 @@
 <:function renderDirs(d) {:>
 	<:if (d.dirs) {:>
 		<:d.dirs.forEach(d => {:>
-			<div class="dir<:selected===d.path ? ' selected' : '':><:d.open ? ' open' : '':>" <:on('click', clickDir, d):>>
-				<div class="item"><span class="folder"><:d.name:></span></div>
-				<:if (d.children) {:>
-					<:renderDirs(d.children):>
-				<:}:>
-			</div>
+			<:if (!d.deleted) {:>
+				<div class="dir<:d.open ? ' open' : '':>" <:on('click', clickDir, d):> <:on('contextmenu', rightClickDir, d):>>
+					<div class="item"><span class="folder"><:d.name:></span></div>
+					<:if (d.children) {:>
+						<:renderDirs(d.children):>
+					<:}:>
+				</div>
+			<:}:>
 		<:}):>
 	<:}:>
 	<:if (d.files) {:>
 		<:d.files.forEach(f => {:>
-			<div class="item file<:active===f.path ? ' active' : '':><:open[f.path] ? ' open' : '':>" <:on('click', clickFile, f):>>
-				<:f.name:>
-			</div>
+			<:if (!f.deleted) {:>
+				<div class="item file<:active===f.path ? ' active' : '':><:open[f.path] ? ' open' : '':>" <:on('click', clickFile, f):> <:on('contextmenu', rightClickFile, f):>>
+					<:f.name:>
+				</div>
+			<:}:>
 		<:}):>
 	<:}:>
 <:}:>

@@ -10,8 +10,6 @@ manila.component('nav', vm => {
 
 		dir.open = !dir.open;
 
-		vm.selected = dir.path;
-
 		if (!dir.children) {
 
 			ajax.get('/nav?path=' + dir.path, data => {
@@ -32,17 +30,45 @@ manila.component('nav', vm => {
 
 	};
 
-	return (path, open) => {
+	vm.rightClickDir = (dir, e) => {
+	
+		manila.components.contextMenu.rightClickDir(dir, e);
 
-		if (open) {
+	};
 
-			vm.open[path] = path;
+	vm.rightClickFile = (file, e) => {
+	
+		manila.components.contextMenu.rightClickFile(file, e);
 
-			vm.active = path;
+	};
 
-		} else {
+	return {
 
-			delete vm.open[path];
+		update: (path, open) => {
+
+			if (open) {
+
+				vm.open[path] = path;
+
+				vm.active = path;
+
+			} else {
+
+				delete vm.open[path];
+
+			}
+
+		},
+
+		getActiveFile: () => {
+
+			return vm.active;
+
+		},
+
+		render: () => {
+
+			vm.render();
 
 		}
 

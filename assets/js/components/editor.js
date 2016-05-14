@@ -2,41 +2,43 @@ import loader from '../src/loader';
 import ajax from '../src/ajax';
 import manila from 'mnla/client';
 
-manila.component('editor', vm => {
+function resetHeight(e) {
 
-	let numbers = document.querySelector('.numbers');
+	let el = document.querySelector('.text'),
 
-	vm.resetHeight = e => {
+		numbers = document.querySelector('.numbers'),
 
-		let el = document.querySelector('.text'),
+		height;
 
-			height;
+	el.style.height = '';
 
-		el.style.height = '';
+	height = el.scrollHeight;
 
-		height = el.scrollHeight;
+	numbers.style.height = '';
 
-		numbers.style.height = '';
+	if (numbers.clientHeight < height) {
 
-		if (numbers.clientHeight < height) {
+		while (numbers.clientHeight < height) {
 
-			while (numbers.clientHeight < height) {
-
-				numbers.innerHTML += '<div class="num"></div>';
-
-			}
-
-		} else {
-
-			numbers.style.height = height + 'px';
+			numbers.innerHTML += '<div class="num"></div>';
 
 		}
 
-		el.style.height = height + 'px';
+	} else {
 
-	};
+		numbers.style.height = height + 'px';
 
-	function update(text) {
+	}
+
+	el.style.height = height + 'px';
+
+}
+
+manila.component('editor', vm => {
+
+	vm.resetHeight = resetHeight;
+
+	function showText(text) {
 
 		vm.text = text;
 
@@ -46,28 +48,32 @@ manila.component('editor', vm => {
 
 	}
 
-	return path => {
+	return {
 
-		loader.after('.overlay');
+		update: path => {
 
-		if (path) {
+			loader.after('.overlay');
 
-			ajax.get('/open?file=' + path, data => {
+			if (path) {
 
-				update(data.data);
+				ajax.get('/open?file=' + path, data => {
+
+					showText(data.data);
+
+					vm.resetHeight();
+
+				});
+
+			} else {
+
+				showText('');
 
 				vm.resetHeight();
 
-			});
-
-		} else {
-
-			update('');
-
-			vm.resetHeight();
+			}
 
 		}
 
-	}
+	};
 
 });

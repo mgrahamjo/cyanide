@@ -1,5 +1,6 @@
 import fileManager from '../src/fileManager';
 import manila from 'mnla/client';
+import { save } from '../src/save';
 
 manila.component('tabs', vm => {
 
@@ -25,20 +26,24 @@ manila.component('tabs', vm => {
 
 	};
 
-	return (file, open) => {
+	return {
 
-		if (open) {
+		update: (file, open) => {
 
-			vm.active = file.path;
+			if (open) {
 
-			vm.tabs[file.path] = file.name;
+				vm.active = file.path;
 
-		} else {
+				vm.tabs[file.path] = file.name;
 
-			delete vm.tabs[file.path];
+			} else {
+
+				delete vm.tabs[file.path];
+
+			}
 
 		}
 
-	}
+	};
 
 });

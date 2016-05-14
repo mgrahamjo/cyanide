@@ -18,6 +18,8 @@ function setSSH(obj) {
 
 function exec(cmd, dir) {
 
+	console.log('executing ' + cmd);
+
 	dir = path.join(cwd, dir || '');
 
 	return new Promise(resolve => {

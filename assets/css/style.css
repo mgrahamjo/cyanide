@@ -35,14 +35,14 @@ body {
 }
 
 .file.open {
-    color: #DAA371;
+    color: #C3A991;
 }
 
-.file.open.active, .dir.open.selected {
+.item:active, .option:active, .file.open.active {
     color: #FF9B40;
 }
 
-.item:hover {
+.item:hover, .option:hover {
   color: white;
 }
 
@@ -113,7 +113,7 @@ body {
 
 .tab {
     padding: 9px 10px 9px 15px;
-    border-bottom: 2px solid #C8976A;
+    border-bottom: 2px solid #C3A991;
     box-shadow: 1px 0px 1px black;
     float: left;
     transition: background-color 0.3s, border-bottom 0.3s;
@@ -171,84 +171,20 @@ svg rect{
     fill: #FF6700;
 }
 
-.menu-toggle {
-    position: fixed;
-    z-index: 2;
-    top: 7px;
-    right: 7px;
-    padding: 0;
-    margin: 0;
-    width: 27px;
-    appearance: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    border: none;
-    border-radius: 0;
-    height: 20px;
-    outline: none;
-    cursor: pointer;
-    background: none;
+.context-menu {
+    position: absolute;
+    background: #33363A;
+    padding: 5px 0;
+    line-height: 24px;
+    box-shadow: 2px 2px 0 rgba(0,0,0,.3);
+    display: none;
 }
 
-.menu {
-    width: 27px;
-    position: fixed;
-    top: 0;
-    right: 7px;
-    padding: 7px 0 0 20px;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.menu .bar {
-    background-color: #F9F9F9;
-    height: 4px;
-    margin-bottom: 4px;
-        /* this shadow makes the menu button look good on both dark and light backgrounds, but it might look funky if your site's background is in-between */
-    box-shadow: 0px 4px 0px rgba(0,0,0,.15);
-    -moz-box-shadow: 0px 4px 0px rgba(0,0,0,.15);
-    -webkit-box-shadow: 0px 4px 0px rgba(0,0,0,.15);
-}
-
-.nav {
-    font-size: 10pt;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s;
-    background-color: rgba(0,0,0,.6);
-    position: fixed;
-    top: 0;
-    right: 0;
-    padding-top: 50px;
-    height: 100%;
-    z-index: 2;
-    width: 15%;
-    min-width: 101px;
-}
-
-.nav a {
-    pointer-events: auto;
+.context-menu.visible {
     display: block;
-    color: white;
-    line-height: 34px;
-    padding: 0 25px 0 20px;
-    visibility: visible;
+}
+
+.option {
     cursor: pointer;
-}
-
-.nav a:hover {
-    color: #DEDEDE;
-}
-
-.menu-toggle:checked {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.menu-toggle:checked + .nav {
-    visibility: visible;
-    opacity: 1;
+    padding: 0 10px;
 }

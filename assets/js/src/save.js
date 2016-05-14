@@ -1,23 +1,19 @@
-import nav from '../components/nav';
+import manila from 'mnla/client';
 import ajax from '../src/ajax';
+
+let bg = document.querySelector('.background')
 
 export function save() {
 
-	let bg = document.querySelector('.background'),
+	let file = manila.components.nav.getActiveFile();
 
-		activeFile = document.querySelector('.file.active'),
-
-		path;
-
-	if (activeFile) {
+	if (file) {
 
 		bg.classList.add('blur');
 
-		path = activeFile.getAttribute('data-path');
-
 		ajax.post(
 
-			'/save?file=' + path,
+			'/save?file=' + file,
 
 			{
 				data: document.querySelector('.text').value
@@ -32,25 +28,6 @@ export function save() {
 					console.error(result.error);
 				
 				} else {
-
-					if (activeFile.classList.contains('new')) {
-
-						let selectedDir = document.querySelector('.dir.selected');
-
-						activeFile.classList.remove('new');
-
-						if (selectedDir) {
-
-							selectedDir.nextElementSibling.outerHTML = '';
-
-							nav.notify(selectedDir, path);
-
-						} else {
-
-							nav.reinitialize();
-						}
-
-					}
 
 					bg.classList.remove('blur');
 

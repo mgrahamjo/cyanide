@@ -4,7 +4,7 @@ let util = require('../util');
 
 module.exports = (req, res) => {
 
-	let cmd = `rm ${req.query.file}`;
+	let cmd = `rm -rf ${req.query.path}`;
 
 	util.exec(cmd).then(data => {
 

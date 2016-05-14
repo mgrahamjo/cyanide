@@ -12,6 +12,12 @@ function serialize(data) {
 }
  
 function get(path, data, callback) {
+
+	if (typeof data === 'function') {
+
+		callback = data;
+
+	}
  
  	let req = new XMLHttpRequest();
  
@@ -51,6 +57,12 @@ function get(path, data, callback) {
 }
  
 function post(path, data, callback) {
+
+	if (typeof data === 'function') {
+
+		callback = data;
+
+	}
  
  	let req = new XMLHttpRequest();
  
