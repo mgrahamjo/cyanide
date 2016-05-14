@@ -144,14 +144,16 @@ manila.component('contextMenu', vm => {
 				
 				} else {
 
-					current.children = current.children || { files:[] };
-
-					current.children.files.push({
+					let newFile = {
 						name: name,
 						path: result.data
-					});
+					};
 
-					manila.components.nav.render();
+					current.children = current.children || { files:[] };
+
+					current.children.files.push(newFile);
+
+					fileManager.open(newFile);
 
 				}
 

@@ -48,6 +48,10 @@ manila.component('editor', vm => {
 
 	}
 
+	setTimeout(() => {
+		resetHeight();
+	});
+
 	return {
 
 		update: path => {
