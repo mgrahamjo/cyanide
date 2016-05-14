@@ -210,6 +210,8 @@ manila.component('contextMenu', vm => {
 
 			vm.file = false;
 
+			vm.parent = dir.parent;
+
 			open(dir, e);
 
 		},

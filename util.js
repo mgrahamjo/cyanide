@@ -2,12 +2,19 @@
 
 const path = require('path');
 
-let cwd, ssh;
+let cwd, ssh, parent;
 
 
 function setCWD(dir) {
 	
 	cwd = dir;
+
+	parent = cwd.replace(path.dirname(cwd) + '/', '');	
+}
+
+function getParent() {
+
+	return parent;
 }
 
 
@@ -36,6 +43,7 @@ module.exports = {
 
 	setCWD: setCWD,
 	setSSH: setSSH,
+	getParent: getParent,
 	exec: exec
 
 };

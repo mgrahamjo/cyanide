@@ -26,6 +26,8 @@ manila.component('tabs', vm => {
 
 	};
 
+	vm.save = save;
+
 	return {
 
 		update: (file, open) => {

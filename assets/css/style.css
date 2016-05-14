@@ -46,10 +46,13 @@ body {
   color: white;
 }
 
+.background, .tabs-component {
+    width: calc(80% + 18px);
+}
+
 .background {
     min-height: 100%;
     background-color: #27262D;
-    width: calc(80% + 18px);
     float: right;
     position: relative;
     transition: -webkit-filter 0.3s, filter 0.3s;
@@ -103,7 +106,6 @@ body {
 }
 
 .tabs-component {
-    width: 100%;
     background-color: #212127;
     height: 35px;
     position: fixed;
@@ -187,4 +189,14 @@ svg rect{
 .option {
     cursor: pointer;
     padding: 0 10px;
+}
+
+.save {
+    float: right;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.save:hover {
+    color: white;
 }

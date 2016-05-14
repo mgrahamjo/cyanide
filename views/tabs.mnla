@@ -4,3 +4,5 @@
 		<a class="close" <:on('click', close, path):>></a>
 	</div>
 <:}:>
+
+<div <:on('click', save):> class="save">&check; save</div>

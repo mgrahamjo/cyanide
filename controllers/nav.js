@@ -35,12 +35,37 @@ module.exports = (req, res) => {
 
 		}).map(process);
 
-		res.json({
-			dir: {
-				dirs: dirs,
-				files: files
-			}
-		});
+		let json;
+
+		if (req.query.parent) {
+
+			json = {
+				dir: {
+					dirs: [{
+						name: req.query.parent,
+						path: '',
+						open: true,
+						parent: true,
+						children: {
+							dirs: dirs,
+							files: files
+						}
+					}]
+				}
+			};
+
+		} else {
+
+			json = {
+				dir: {
+					dirs: dirs,
+					files: files
+				}
+			};
+
+		}
+
+		res.json(json);
 
 	});
 };
