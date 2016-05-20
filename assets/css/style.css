@@ -24,7 +24,7 @@ body {
 }
 
 .dir, .file {
-    padding: 4px 15px;
+    padding: 4px 0 4px 15px;
     color: #C8D4E0;
     overflow: hidden;
     height: 1em;

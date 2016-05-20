@@ -222,6 +222,8 @@ manila.component('contextMenu', vm => {
 
 			vm.file = true;
 
+			vm.parent = false;
+
 			open(file, e)
 
 		}
