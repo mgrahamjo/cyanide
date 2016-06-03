@@ -6,6 +6,8 @@
 					<div class="item"><span class="folder"><:d.name:></span></div>
 					<:if (d.children) {:>
 						<:renderDirs(d.children):>
+					<:} else {:>
+						<i class="loader visible"></i>
 					<:}:>
 				</div>
 			<:}:>

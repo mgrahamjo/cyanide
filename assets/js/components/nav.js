@@ -6,15 +6,19 @@ manila.component('nav', vm => {
 
 	vm.open = {};
 
-	vm.clickDir = dir => {
+	vm.clickDir = (dir, e) => {
 
 		dir.open = !dir.open;
 
 		if (!dir.children) {
 
+			vm.loading = true;
+
 			ajax.get('/nav?path=' + dir.path, data => {
 
 				dir.children = data.dir;
+
+				delete vm.loading;
 
 				vm.render();
 

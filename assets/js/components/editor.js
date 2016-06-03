@@ -1,4 +1,3 @@
-import loader from '../src/loader';
 import ajax from '../src/ajax';
 import manila from 'mnla/client';
 
@@ -42,7 +41,7 @@ manila.component('editor', vm => {
 
 		vm.text = text;
 
-		loader.hide();
+		delete vm.loading;
 
 		vm.render();
 
@@ -56,9 +55,9 @@ manila.component('editor', vm => {
 
 		update: path => {
 
-			loader.after('.overlay');
-
 			if (path) {
+
+				vm.loading = true;
 
 				ajax.get('/open?file=' + path, data => {
 

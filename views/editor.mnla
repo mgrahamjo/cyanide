@@ -1,1 +1,4 @@
-<textarea class="text" <:on('input', resetHeight):>><:text:></textarea>
+<:if (typeof loading !== 'undefined') {:>
+	<i class="loader visible"></i>
+<:}:>
+<textarea class="text" <:on('input', resetHeight):>><::text::></textarea>
