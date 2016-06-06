@@ -91,6 +91,7 @@ app
 	.get('/', require('./controllers/index'))
 	.get('/nav', require('./controllers/nav'))
 	.get('/open', require('./controllers/open'))
+	.get('/search', require('./controllers/search'))
 	.post('/save', bodyParser, require('./controllers/save'))
 	.post('/rename', bodyParser, require('./controllers/rename'))
 	.post('/new-file', bodyParser, require('./controllers/newFile'))

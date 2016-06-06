@@ -9,6 +9,8 @@
 
 <::component.contextMenu::>
 
+<::component.search::>
+
 <::component.nav::>
 
 <div class="background">
@@ -16,6 +18,8 @@
 	<div class="overlay"></div>
 
 	<::component.tabs::>
+
+	<div class="resize"></div>
 
 	<div class="numbers"></div>
 

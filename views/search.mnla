@@ -1,0 +1,3 @@
+<input type="text" class="search-box" placeholder="search file names" <:on('input', search):> required>
+<div class="search-close" <:on('mousedown', close):>></div>
+<i class="loader search-loader"></i>

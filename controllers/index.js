@@ -12,9 +12,13 @@ module.exports = (req, res) => {
 	manila({
 
 		nav: nav,
+		editor: {
+			disabled: true,
+			loading: false
+		},
 		tabs: null,
-		editor: null,
-		contextMenu: null
+		contextMenu: null,
+		search: null
 
 	}, req, res).then(data => {
 

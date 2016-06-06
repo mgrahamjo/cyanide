@@ -4,6 +4,8 @@ import manila from 'mnla/client';
 
 manila.component('nav', vm => {
 
+	let cache = vm.dir;
+
 	vm.open = {};
 
 	vm.clickDir = (dir, e) => {
@@ -60,6 +62,8 @@ manila.component('nav', vm => {
 
 				delete vm.open[path];
 
+				delete vm.active;
+
 			}
 
 		},
@@ -73,6 +77,18 @@ manila.component('nav', vm => {
 		render: () => {
 
 			vm.render();
+
+		},
+
+		showSearchResults: results => {
+
+			vm.dir = results;
+
+		},
+
+		hideSearchResults: () => {
+
+			vm.dir = cache;
 
 		}
 

@@ -4,7 +4,7 @@ import manila from 'mnla/client';
 function resetHeight(e) {
 
 	let el = document.querySelector('.text'),
-
+	
 		numbers = document.querySelector('.numbers'),
 
 		height;
@@ -23,11 +23,9 @@ function resetHeight(e) {
 
 		}
 
-	} else {
-
-		numbers.style.height = height + 'px';
-
 	}
+
+	numbers.style.height = height + 'px';
 
 	el.style.height = height + 'px';
 
@@ -37,27 +35,31 @@ manila.component('editor', vm => {
 
 	vm.resetHeight = resetHeight;
 
+	vm.loading = false;
+
 	function showText(text) {
 
 		vm.text = text;
 
-		delete vm.loading;
+		vm.loading = false;
 
 		vm.render();
 
 	}
 
-	setTimeout(() => {
-		resetHeight();
-	});
+	setTimeout(resetHeight);
 
 	return {
 
 		update: path => {
 
+			showText('');
+
 			if (path) {
 
 				vm.loading = true;
+
+				vm.disabled = false;
 
 				ajax.get('/open?file=' + path, data => {
 
@@ -68,6 +70,8 @@ manila.component('editor', vm => {
 				});
 
 			} else {
+
+				vm.disabled = true;
 
 				showText('');
 

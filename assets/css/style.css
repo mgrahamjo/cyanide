@@ -1,5 +1,5 @@
 body {
-  background-color: #27262D;
+  background-color: #35353C;
   color: #C8D4E0;
   margin: 0;
   font-family: 'Inconsolata', 'monospace';
@@ -8,15 +8,18 @@ body {
   overflow-y: scroll;
 }
 
+body.dragging {
+    cursor: col-resize;
+}
+
 .nav-component {
-    background-color: #2B2B33;
-    width: 20%;
+    width: 100%;
     position: fixed;
     height: 100%;
     padding: 10px 0;
     overflow-y: scroll;
     box-sizing: border-box;
-    z-index: -1;
+    top: 36px;
 }
 
 .item {
@@ -47,17 +50,14 @@ body {
   color: white;
 }
 
-.background, .tabs-component {
-    width: calc(80% + 18px);
-}
-
 .background {
     min-height: 100%;
     background-color: #27262D;
-    float: right;
+    left: 20%;
     position: relative;
     transition: -webkit-filter 0.3s, filter 0.3s;
-    box-shadow: 0 0 10px rgba(0,0,0,.5);
+    overflow: hidden;
+    width: 80%;
 }
 
 .background.blur {
@@ -86,6 +86,10 @@ body {
     height: calc(100vh - 38px);
 }
 
+.text.disabled {
+    pointer-events: none;
+}
+
 .numbers {
     float: left;
     color: #5E5F75;
@@ -95,6 +99,14 @@ body {
     overflow: hidden;
     margin-top: 35px;
     counter-reset: line;
+}
+
+.resize {
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    cursor: col-resize;
+    background: rgba(0,0,0,.2);
 }
 
 .num:before {
@@ -107,20 +119,23 @@ body {
 }
 
 .tabs-component {
-    background-color: #212127;
+    background-color: #35353C;
     height: 35px;
     position: fixed;
     z-index: 1;
-    box-shadow: 1px 1px 10px black;
+    border-bottom: 3px solid #1F1E24;
+    width: 80%;
 }
 
 .tab {
     padding: 9px 10px 9px 15px;
     border-bottom: 2px solid #C3A991;
-    box-shadow: 1px 0px 1px black;
+    box-shadow: 2px 0px 0px rgba(0,0,0,.3);
     float: left;
     transition: background-color 0.3s, border-bottom 0.3s;
     cursor: pointer;
+    background-color: #27262D;
+    border-left: 1px solid rgb(35, 30, 26);
 }
 
 .tab:hover {
@@ -129,7 +144,11 @@ body {
 
 .tab.active {
     border-bottom: 2px solid #FF9B40;
-    background-color: #302F35;
+    background-color: #3C3C44;
+}
+
+.tab.active .close {
+    color: #7D8086;
 }
 
 .close {
@@ -142,7 +161,7 @@ body {
     transition: color 0.3s;
 }
 
-.close:hover {
+.close:hover, .tab.active .close:hover {
     color: #C8D4E0;
 }
 
@@ -154,7 +173,7 @@ body {
     opacity: 0;
     display: block;
     margin: 7px 0 0 10px;
-    font-size: 10px;
+    font-size: 4px;
     position: relative;
     text-indent: -9999em;
     border-top: 1.1em solid rgba(255, 255, 255, 0.2);
@@ -170,8 +189,8 @@ body {
 .loader,
 .loader:after {
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
 }
 @-webkit-keyframes load8 {
     0% {
@@ -205,9 +224,69 @@ body {
     left: 55%;
 }
 
-svg path,
-svg rect{
-    fill: #FF6700;
+.search-component {
+    padding: 12px 10px 0;
+    box-sizing: border-box;
+    width: calc(20% - 5px);
+    position: fixed;
+}
+
+.search-box {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #202125;
+    border: 0;
+    outline: 0;
+    border-radius: 50px;
+    height: 24px;
+    box-shadow: inset 1px 1px 2px black, 1px 1px 0px #353742;
+    color: #C8D4E0;
+    padding: 0 11px 2px;
+    font-size: 12px;
+}
+
+.search-loader {
+    right: 13px;
+    top: 9px;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    font-size: 4px;
+    background-color: #202125;
+    pointer-events: none;
+}
+
+.search-close {
+    right: 17px;
+    top: 11px;
+    position: absolute;
+    font-size: 18pt;
+    cursor: pointer;
+    display: none;
+}
+
+.search-close:after {
+    content: "\00d7";
+}
+
+.search-box:valid + .search-close {
+    display: block;
+}
+
+::-webkit-input-placeholder {
+   color: #616B75;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #616B75;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #616B75;  
+}
+
+:-ms-input-placeholder {  
+   color: #616B75;  
 }
 
 .context-menu {
@@ -216,6 +295,7 @@ svg rect{
     padding: 5px 0;
     line-height: 24px;
     box-shadow: 2px 2px 0 rgba(0,0,0,.3);
+    z-index: 1;
     display: none;
 }
 

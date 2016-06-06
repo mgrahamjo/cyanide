@@ -45,7 +45,6 @@ module.exports = (req, res) => {
 						name: req.query.parent,
 						path: '',
 						open: true,
-						parent: true,
 						children: {
 							dirs: dirs,
 							files: files
