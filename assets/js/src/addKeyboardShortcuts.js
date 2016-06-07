@@ -1,4 +1,5 @@
 import { save } from './save';
+import { tab } from './tab';
 
 const keymap = {
 
@@ -10,6 +11,11 @@ const keymap = {
 		83: {
 			callback: save,
 			pair: 91
+		},
+
+		9: {
+			callback: tab,
+			pair: 9
 		}
 
 	};
