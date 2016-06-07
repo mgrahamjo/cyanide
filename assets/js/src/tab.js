@@ -2,8 +2,13 @@ export function tab() {
 	
 	let text = document.querySelector('.text'),
 
-		index = text.selectionStart;
+		start = text.selectionStart;
 
-	text.value = `${text.value.substring(0, index)}    ${text.value.substring(index)}`;
+	text.value = `${text.value.substring(0, start)}    ${text.value.substring(text.selectionEnd)}`;
+
+	start += 4;
+
+	text.selectionStart = start;
+	text.selectionEnd   = start;
 
 };
