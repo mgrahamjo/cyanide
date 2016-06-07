@@ -18,7 +18,11 @@ CyanIDE requires Node.js to be installed.
 
 ## Setup
 
-Edit config.json with connection settings for your remote project:
+From the command line, in the `/cyanide` folder, run:
+
+`npm install`
+
+Then, save your connection settings in config.json:
 
 ```javascript
 {
@@ -33,9 +37,9 @@ Edit config.json with connection settings for your remote project:
 
 ## Running the app
 
-From the command line, in the `/cyanide` folder:
+From the command line, in the `/cyanide` folder, run:
 
-`npm install && node .`
+`node .`
 
 You will be prompted for the password to your RSA key before the app starts up at http://localhost:8000.
 

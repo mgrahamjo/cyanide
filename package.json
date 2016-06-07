@@ -1,6 +1,6 @@
 {
   "name": "cyanide",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A web-based IDE for editing files on a remote host",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "watch": "npm-watch"
   },
   "author": "Mike Johnson",
+  "repository": "https://github.com/mgrahamjo/cyanide",
   "license": "ISC",
   "watch": {
     "dev": {
@@ -22,6 +23,7 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
+    "mnla": "0.0.1",
     "node-ssh": "^2.0.7",
     "prompt": "^1.0.0"
   },

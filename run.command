@@ -12,10 +12,14 @@ if [ command -v node >/dev/null 2>&1 ]; then
 
 else
 
-	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+	cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-	npm install
+	if [ ! -d "node_modules" ]; then
 
-	node "${DIR}/index.js"
+		npm install
+
+	fi
+
+	node index.js
 
 fi
