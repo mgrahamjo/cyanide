@@ -33,9 +33,9 @@ Save your connection settings in config.json:
 
 ## Running the app
 
-On Mac, double-click `run.mac.command`. The first time you run it, you will need to right click and click 'open' to indicate that you trust the third-party application.
+On Mac, open the CyanIDE app.
 
-On Windows, double-click `run.windows.cmd`.
+On Windows, double-click `CyanIDE.cmd`.
 
 You will be prompted for the password to your RSA key before the app starts up at http://localhost:8000.
 
