@@ -33,7 +33,11 @@ Edit config.json with connection settings for your remote project:
 
 ## Running the app
 
-From the command line, in the `/cyanide` folder, run `node .`. You will be prompted for the password to your RSA key before the app starts up at http://localhost:8000.
+From the command line, in the `/cyanide` folder:
+
+`npm install && node .`
+
+You will be prompted for the password to your RSA key before the app starts up at http://localhost:8000.
 
 #### Shortcut for Mac users:
 
