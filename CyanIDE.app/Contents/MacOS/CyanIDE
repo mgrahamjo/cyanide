@@ -1,0 +1,39 @@
+#!/bin/bash
+
+osascript <<-eof
+
+  tell application "Terminal"
+
+  	activate
+
+    do script "if [ command -v node >/dev/null 2>&1 ]; then
+
+		echo 'Node.js must be installed.'
+
+		if [ -d '/Applications/Google Chrome.app' ]; then
+			
+			/usr/bin/open -a '/Applications/Google Chrome.app' 'https://nodejs.org'
+			
+		fi
+
+	else
+
+		cd $(dirname $BASH_SOURCE)
+
+		cd ../../..
+
+		if [ ! -d node_modules ]; then
+
+			npm install
+
+		fi
+
+		clear
+
+		node .
+
+	fi"
+
+  end tell
+  
+eof

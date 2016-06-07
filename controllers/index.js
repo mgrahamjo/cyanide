@@ -3,7 +3,7 @@
 const 
 	manila = require('mnla/server'),
 	nav = require('./nav'),
-	util = require('../util');
+	util = require('../lib/util');
 
 module.exports = (req, res) => {
 

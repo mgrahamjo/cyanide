@@ -1,6 +1,6 @@
 'use strict';
 
-const util = require('../util'),
+const util = require('../lib/util'),
 	path = require('path');
 
 module.exports = (req, res) => {

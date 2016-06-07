@@ -1,6 +1,6 @@
 'use strict';
 
-let util = require('../util');
+let util = require('../lib/util');
 
 module.exports = (req, res) => {
 
