@@ -18,11 +18,7 @@ CyanIDE requires Node.js to be installed.
 
 ## Setup
 
-From the command line, in the `/cyanide` folder, run:
-
-`npm install`
-
-Then, save your connection settings in config.json:
+Save your connection settings in config.json:
 
 ```javascript
 {
@@ -37,15 +33,13 @@ Then, save your connection settings in config.json:
 
 ## Running the app
 
-From the command line, in the `/cyanide` folder, run:
+On Mac, double-click `run.mac.command`. The first time you run it, you will need to right click and click 'open' to indicate that you trust the third-party application.
 
-`node .`
+On Windows, double-click `run.windows.cmd`.
 
 You will be prompted for the password to your RSA key before the app starts up at http://localhost:8000.
 
-#### Shortcut for Mac users:
-
-Open the `run.command` file and enter your password.
+The first time you run the app it will take a moment to run `npm install` before starting up.
 
 ## Features
 

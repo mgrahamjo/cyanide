@@ -25,7 +25,7 @@ function setSSH(obj) {
 
 function exec(cmd, dir) {
 
-	dir = path.join(cwd, dir || '');
+	dir = path.join(cwd, dir || '').replace(/\\/g, '/');
 
 	return new Promise(resolve => {
 

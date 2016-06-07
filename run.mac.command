@@ -20,6 +20,6 @@ else
 
 	fi
 
-	node index.js
+	node .
 
 fi
