@@ -1,6 +1,6 @@
 {
-	"host": "mijohnson-adm.dev.booking.com",
-	"username": "mijohnson",
-	"privateKey": "/Users/Mike/.ssh/id_rsa",
-	"cwd": "/usr/local/git_tree/main/apps/admin/hoteladmin/extranet_ng"
+    "host": "your.remote.host",
+    "username": "yourUsername",
+    "privateKey": "/Users/You/.ssh/id_rsa",
+    "cwd": "/path/to/remote/directory"
 }
