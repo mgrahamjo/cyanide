@@ -4,6 +4,7 @@
 <title><:parent:></title>
 <link rel="stylesheet" href="/assets/css/style.css" />
 <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+<link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
 

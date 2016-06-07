@@ -8,6 +8,8 @@ const express = require('express'),
 
 	fs = require('fs'),
 
+	path = require('path').dirname(require.main.filename),
+
 	prompt = require('prompt'),
 
 	SSH = require('node-ssh'),
@@ -39,9 +41,9 @@ function connect() {
 
 	ssh.connect(config).then(() => {
 
-		app.listen(1337, () => {
+		app.listen(config.port || 8000, () => {
 
-			console.log('Ready.');
+			console.log(`Listening at http://localhost:${config.port || 8000}`);
 
 		});
 
@@ -61,7 +63,7 @@ function handleInput(err, result) {
 }
 
 
-fs.readFile('./config.json', (err, json) => {
+fs.readFile(path + '/config.json', (err, json) => {
 
 	config = JSON.parse(json);
 
@@ -83,11 +85,10 @@ fs.readFile('./config.json', (err, json) => {
 
 app
 	.use(express.static('assets'))
-	.use('/assets', express.static('assets'))
-	//.use('/node_modules/mnla', express.static('node_modules/mnla'))
+	.use('/assets', express.static(path + '/assets'))
 	.engine('mnla', mnla)
 	.set('view engine', 'mnla')
-	.set('views', './views')
+	.set('views', path + '/views')
 	.get('/', require('./controllers/index'))
 	.get('/nav', require('./controllers/nav'))
 	.get('/open', require('./controllers/open'))

@@ -1,0 +1,6 @@
+{
+	"host": "your.remote.host",
+	"username": "yourUsername",
+	"privateKey": "/Users/You/.ssh/id_rsa",
+	"cwd": "/path/to/remote/directory"
+}
