@@ -1,43 +1,16 @@
 import ajax from '../src/ajax';
 import manila from 'mnla/client';
-
-function resetHeight(e) {
-
-	let el = document.querySelector('.text'),
-	
-		numbers = document.querySelector('.numbers'),
-
-		height;
-
-	el.style.height = '';
-
-	height = el.scrollHeight;
-
-	numbers.style.height = '';
-
-	if (numbers.clientHeight < height) {
-
-		while (numbers.clientHeight < height) {
-
-			numbers.innerHTML += '<div class="num"></div>';
-
-		}
-
-	}
-
-	numbers.style.height = height + 'px';
-
-	el.style.height = height + 'px';
-
-}
+import { loadMode } from '../src/loadMode';
 
 manila.component('editor', vm => {
 
-	vm.resetHeight = resetHeight;
+	let openFiles = {},
+		editor,
+		currentPath;
 
 	vm.loading = false;
 
-	function showText(text) {
+	function showText(text, extension) {
 
 		vm.text = text;
 
@@ -45,39 +18,67 @@ manila.component('editor', vm => {
 
 		vm.render();
 
-	}
+		if (text && extension) {
 
-	setTimeout(resetHeight);
+			loadMode(extension).then(mode => {
+
+				editor = CodeMirror.fromTextArea(document.querySelector('.text'), {
+					theme: 'monokai',
+				 	lineNumbers: true,
+				 	lineWrapping: true,
+				 	scrollbarStyle: null,
+				 	mode: mode
+				});
+
+			});
+
+		}
+
+
+
+	}
 
 	return {
 
 		update: path => {
 
+			let extension = path.split('.');
+
+			extension = extension[extension.length - 1];
+
 			showText('');
 
-			if (path) {
+			if (currentPath && editor) {
 
-				vm.loading = true;
+				openFiles[currentPath] = editor.getValue();
 
-				vm.disabled = false;
+			}
 
-				ajax.get('/open?file=' + path, data => {
+			currentPath = path;
 
-					showText(data.data);
+			if (openFiles[path]) {
 
-					vm.resetHeight();
-
-				});
+				showText(openFiles[path], extension);
 
 			} else {
 
-				vm.disabled = true;
+				vm.loading = true;
 
-				showText('');
+				ajax.get('/open?file=' + path, data => {
 
-				vm.resetHeight();
+					showText(data.data, extension);
+
+				});
 
 			}
+
+		},
+
+		close: path => {
+
+			showText('');
+
+			delete openFiles[path];
 
 		}
 

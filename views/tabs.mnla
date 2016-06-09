@@ -5,4 +5,4 @@
 	</div>
 <:}:>
 
-<div <:on('click', save):> class="save">&check; save</div>
+<div <:on('click', save):> class="save tab">&check; save</div>

@@ -18,7 +18,7 @@ function close(file) {
 
 	let openList;
 
-	manila.components.editor.update('');
+	manila.components.editor.close(file.path);
 
 	manila.components.nav.update(file.path, false);
 	

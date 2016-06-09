@@ -4,11 +4,19 @@ import { debounce } from '../src/debounce';
 
 manila.component('search', vm => {
 
+	let req;
+
 	function search(e) {
 
 		document.querySelector('.search-loader').classList.add('visible');
 
-		ajax.get(`/search?term=${e.target.value}`, results => {
+		if (req) {
+
+			req.abort();
+
+		}
+
+		req = ajax.get(`/search?term=${e.target.value}`, results => {
 		
 			manila.components.nav.showSearchResults(results);
 

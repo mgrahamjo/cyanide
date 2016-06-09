@@ -75,6 +75,8 @@ function get(path, data, callback) {
  
  	req.send(serialize(data));
 
+ 	return req;
+
 }
  
 function post(path, data, callback) {
@@ -126,6 +128,8 @@ function post(path, data, callback) {
  	req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
  
  	req.send(serialize(data));
+
+ 	return req;
 
 }
 

@@ -2,4 +2,4 @@
 	<i class="loader visible"></i>
 <:}:>
 
-<textarea class="text<: if (disabled) {:> disabled<:}:>" <:on('input', resetHeight):>><::text::></textarea>
+<textarea class="text"><::text::></textarea>

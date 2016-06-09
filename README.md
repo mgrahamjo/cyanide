@@ -8,12 +8,6 @@ CyanIDE is a simple web interface for editing files on a remote linux server. It
 git clone https://github.com/mgrahamjo/cyanide
 ```
 
-or
-
-```
-npm install cyanide
-```
-
 CyanIDE requires Node.js to be installed.
 
 ## Setup
@@ -37,9 +31,9 @@ On Mac, open the CyanIDE app.
 
 On Windows, double-click `CyanIDE.cmd`.
 
-You will be prompted for the password to your RSA key before the app starts up at http://localhost:8000.
+You will be prompted for the password to your RSA key. The first time you run the app it will take a few moments to run `npm install` before starting up.
 
-The first time you run the app it will take a moment to run `npm install` before starting up.
+Once connected, visit http://localhost:8000 in Chrome.
 
 ## Features
 
@@ -62,3 +56,7 @@ Right click on a folder or file and click "Rename". Enter a new name in the dial
 #### Save changes
 
 After opening and editing a file, click "save" or press cmd + s on your keyboard.
+
+#### Syntax Highlighting
+
+CyanIDE uses file extensions to determine syntax highlighting rules. To change which file extensions map to which syntaxes, edit `lib/extensions.json`. If the syntax you're using is not currently supported, please [open an issue](https://github.com/mgrahamjo/cyanide/issues/new).

@@ -3,7 +3,6 @@
 <head>
 <title><:parent:></title>
 <link rel="stylesheet" href="/assets/css/style.css" />
-<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
@@ -20,9 +19,9 @@
 
 	<::component.tabs::>
 
-	<div class="resize"></div>
+	<::component.menu::>
 
-	<div class="numbers"></div>
+	<div class="resize"></div>
 
 	<::component.editor::>
 
@@ -30,6 +29,12 @@
 
 <::clientData::>
 
-<script src="/assets/js/dist/script.js"></script>
+<script src="assets/js/dist/script.js"></script>
+<script src="assets/js/dist/codemirror.js"></script>
+<script src="assets/js/dist/xml.js"></script>
+<script src="assets/js/dist/css.js"></script>
+<script src="assets/js/dist/javascript.js"></script>
+<script src="assets/js/dist/htmlmixed.js"></script>
+<script>window.modes=<::modes::>;</script>
 </body>
 </html>
