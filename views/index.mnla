@@ -4,6 +4,8 @@
 <title><:parent:></title>
 <link rel="stylesheet" href="/assets/css/style.css" />
 <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -30,11 +32,6 @@
 <::clientData::>
 
 <script src="assets/js/dist/script.js"></script>
-<script src="assets/js/dist/codemirror.js"></script>
-<script src="assets/js/dist/xml.js"></script>
-<script src="assets/js/dist/css.js"></script>
-<script src="assets/js/dist/javascript.js"></script>
-<script src="assets/js/dist/htmlmixed.js"></script>
 <script>window.modes=<::modes::>;</script>
 </body>
 </html>

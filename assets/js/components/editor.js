@@ -1,6 +1,7 @@
 import ajax from '../src/ajax';
 import manila from 'mnla/client';
 import { loadMode } from '../src/loadMode';
+import { save } from '../src/save';
 
 manila.component('editor', vm => {
 
@@ -18,16 +19,19 @@ manila.component('editor', vm => {
 
 		vm.render();
 
-		if (text && extension) {
+		if (extension) {
 
 			loadMode(extension).then(mode => {
 
 				editor = CodeMirror.fromTextArea(document.querySelector('.text'), {
 					theme: 'monokai',
 				 	lineNumbers: true,
-				 	lineWrapping: true,
-				 	scrollbarStyle: null,
-				 	mode: mode
+				 	mode: mode,
+				 	keyMap: 'sublime',
+				 	extraKeys: {
+				 		'Cmd-S': save,
+				 		'Ctrl-S': save
+				 	}
 				});
 
 			});

@@ -16,7 +16,7 @@ export function save() {
 			'/save?file=' + file,
 
 			{
-				data: document.querySelector('.text').value
+				data: document.querySelector('.CodeMirror').CodeMirror.getValue()
 			},
 
 			result => {

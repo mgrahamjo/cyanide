@@ -2,8 +2,10 @@ body {
   background-color: #35353C;
   color: #C8D4E0;
   margin: 0;
-  font-family: Monospace;
-  font-size: 12px;
+  font-family: 'Source Code Pro', monospace;
+  font-weight: 300;
+  font-size: 11px;
+  overflow: hidden;
 }
 
 body.dragging {
@@ -91,7 +93,7 @@ body.dragging {
     position: absolute;
     cursor: col-resize;
     background: rgba(0,0,0,.2);
-    z-index: 10;
+    z-index: 9;
 }
 
 .folder:after {
@@ -104,7 +106,7 @@ body.dragging {
 
 .tabs-component {
     background-color: #35353C;
-    height: 35px;
+    height: 33px;
     position: fixed;
     z-index: 10;
     border-bottom: 3px solid #1F1E24;
@@ -242,7 +244,7 @@ body.dragging {
 
 .search-close {
     right: 15px;
-    top: 10px;
+    top: 9px;
     position: absolute;
     font-size: 18pt;
     cursor: pointer;
@@ -310,8 +312,9 @@ body.dragging {
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-family: monospace;
+  font-family: 'Source Code Pro', monospace;
   color: black;
+  font-size: 12px;
 }
 
 /* PADDING */
@@ -468,6 +471,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 .CodeMirror-sizer {
   position: relative;
   border-right: 30px solid transparent;
+  min-height: calc(100vh - 33px) !important;
   height: calc(100vh - 33px) !important;
 }
 
@@ -617,8 +621,8 @@ div.CodeMirror-dragcursors {
 .CodeMirror-selected { background: #d9d9d9; }
 .CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
 .CodeMirror-crosshair { cursor: crosshair; }
-.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }
-.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: rgba(79, 80, 93, 0.99); }
+.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: rgba(79, 80, 93, 0.99); }
 
 .cm-searching {
   background: #ffa;
@@ -639,22 +643,22 @@ span.CodeMirror-selectedtext { background: none; }
 
 /* Based on Sublime Text's Monokai theme */
 
-.cm-s-monokai.CodeMirror { color: #f8f8f2; font-size: 13px; }
-.cm-s-monokai div.CodeMirror-selected { background: #49483E; }
-.cm-s-monokai .CodeMirror-line::selection, .cm-s-monokai .CodeMirror-line > span::selection, .cm-s-monokai .CodeMirror-line > span > span::selection { background: rgba(73, 72, 62, .99); }
-.cm-s-monokai .CodeMirror-line::-moz-selection, .cm-s-monokai .CodeMirror-line > span::-moz-selection, .cm-s-monokai .CodeMirror-line > span > span::-moz-selection { background: rgba(73, 72, 62, .99); }
+.cm-s-monokai.CodeMirror { color: #f8f8f2; }
+.cm-s-monokai div.CodeMirror-selected { background: rgba(79, 80, 93, 0.99); }
+.cm-s-monokai .CodeMirror-line::selection, .cm-s-monokai .CodeMirror-line > span::selection, .cm-s-monokai .CodeMirror-line > span > span::selection { background: rgba(79, 80, 93, 0.99); }
+.cm-s-monokai .CodeMirror-line::-moz-selection, .cm-s-monokai .CodeMirror-line > span::-moz-selection, .cm-s-monokai .CodeMirror-line > span > span::-moz-selection { background: rgba(79, 80, 93, 0.99); }
 .cm-s-monokai .CodeMirror-gutters { border-right: 0px; }
 .cm-s-monokai .CodeMirror-guttermarker { color: white; }
 .cm-s-monokai .CodeMirror-guttermarker-subtle { color: #d0d0d0; }
 .cm-s-monokai .CodeMirror-linenumber { color: #676575; }
 .cm-s-monokai .CodeMirror-cursor { border-left: 1px solid #f8f8f0; }
 
-.cm-s-monokai span.cm-comment { color: #75715e; }
+.cm-s-monokai span.cm-comment {     color: #827f8e; font-weight: 400; }
 .cm-s-monokai span.cm-atom { color: #ae81ff; }
 .cm-s-monokai span.cm-number { color: #ae81ff; }
 
 .cm-s-monokai span.cm-property, .cm-s-monokai span.cm-attribute { color: #a6e22e; }
-.cm-s-monokai span.cm-keyword { color: #f92672; }
+.cm-s-monokai span.cm-keyword { color: #f92672; font-weight: 400; }
 .cm-s-monokai span.cm-builtin { color: #66d9ef; }
 .cm-s-monokai span.cm-string { color: #e6db74; }
 
@@ -663,7 +667,7 @@ span.CodeMirror-selectedtext { background: none; }
 .cm-s-monokai span.cm-variable-3 { color: #66d9ef; }
 .cm-s-monokai span.cm-def { color: #fd971f; }
 .cm-s-monokai span.cm-bracket { color: #f8f8f2; }
-.cm-s-monokai span.cm-tag { color: #f92672; }
+.cm-s-monokai span.cm-tag { color: #f92672; font-weight: 400; }
 .cm-s-monokai span.cm-header { color: #ae81ff; }
 .cm-s-monokai span.cm-link { color: #ae81ff; }
 .cm-s-monokai span.cm-error { background: #752D47; color: #f8f8f0; }

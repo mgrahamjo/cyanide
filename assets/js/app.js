@@ -1,7 +1,17 @@
-import addKeyboardShortcuts from './src/addKeyboardShortcuts';
-import resize from './src/resize';
-import nav from './components/nav';
-import editor from './components/editor';
-import tabs from './components/tabs';
-import contextMenu from './components/contextMenu';
-import search from './components/search';
+// CodeMirror dependencies
+require('codemirror/addon/comment/comment');
+require('codemirror/addon/search/searchcursor');
+require('codemirror/keymap/sublime');
+require('codemirror/mode/css/css');
+require('codemirror/mode/htmlmixed/htmlmixed');
+require('codemirror/mode/javascript/javascript');
+require('codemirror/mode/xml/xml');
+window.CodeMirror = require('codemirror');
+
+// First-party modules
+import './src/resize';
+import './components/nav';
+import './components/editor';
+import './components/tabs';
+import './components/contextMenu';
+import './components/search';
