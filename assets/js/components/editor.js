@@ -44,45 +44,53 @@ manila.component('editor', vm => {
 
 	return {
 
-		update: path => {
+		update: (path, opening) => {
 
-			let extension = path.split('.');
+			if (!opening) {
 
-			extension = extension[extension.length - 1];
+				showText('');
 
-			showText('');
+				delete openFiles[path];
 
-			if (currentPath && editor) {
+				if (editor) {
 
-				openFiles[currentPath] = editor.getValue();
+					editor.setValue('');
 
-			}
-
-			currentPath = path;
-
-			if (openFiles[path]) {
-
-				showText(openFiles[path], extension);
+				}
 
 			} else {
 
-				vm.loading = true;
+				let extension = path.split('.');
 
-				ajax.get('/open?file=' + path, data => {
+				extension = extension[extension.length - 1];
 
-					showText(data.data, extension);
+				showText('');
 
-				});
+				if (currentPath && editor) {
+
+					openFiles[currentPath] = editor.getValue();
+
+				}
+
+				currentPath = path;
+
+				if (openFiles[path]) {
+
+					showText(openFiles[path], extension);
+
+				} else {
+
+					vm.loading = true;
+
+					ajax.get('/open?file=' + path, data => {
+
+						showText(data.data, extension);
+
+					});
+
+				}
 
 			}
-
-		},
-
-		close: path => {
-
-			showText('');
-
-			delete openFiles[path];
 
 		}
 

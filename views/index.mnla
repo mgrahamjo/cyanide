@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title><:parent:></title>
+<title>CyanIDE | <:parent:></title>
 <link rel="stylesheet" href="/assets/css/style.css" />
 <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
 <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:300' rel='stylesheet' type='text/css'>

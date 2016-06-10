@@ -6,6 +6,8 @@
 
 		<div class="option" <:on('click', newDir):>>New Folder</div>
 
+		<div class="option" <:on('click', refresh):>>Refresh</div>
+
 	<:}:>
 
 	<: if (!parent) { :>

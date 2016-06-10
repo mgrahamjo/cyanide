@@ -8,8 +8,6 @@ manila.component('tabs', vm => {
 
 	vm.close = path => {
 
-		delete vm.tabs[path];
-
 		fileManager.close({
 			path: path,
 			name: vm.tabs[path]

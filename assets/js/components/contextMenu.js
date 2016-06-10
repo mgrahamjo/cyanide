@@ -86,35 +86,41 @@ manila.component('contextMenu', vm => {
 
 		vm.visible = false;
 
-		ajax.post(
+		vm.render();
 
-			'/delete?path=' + current.path,
+		if (confirm(`Permanently delete ${current.path}?`)) {
 
-			result => {
+			ajax.post(
 
-				if (result.error) {
+				'/delete?path=' + current.path,
 
-					alert(result.error);
-				
-					console.error(result.error);
-				
-				} else {
+				result => {
 
-					if (vm.file) {
+					if (result.error) {
 
-						fileManager.close(current);
+						alert(result.error);
+					
+						console.error(result.error);
+					
+					} else {
+
+						current.deleted = true;
+
+						manila.components.nav.render();
+
+						if (vm.file) {
+
+							fileManager.close(current);
+
+						}
 
 					}
 
-					current.deleted = true;
-
-					manila.components.nav.render();
-
 				}
+				
+			);
 
-			}
-			
-		);
+		}
 
 	};
 
@@ -203,6 +209,32 @@ manila.component('contextMenu', vm => {
 			}
 			
 		);
+
+	};
+
+	vm.refresh = () => {
+
+		vm.visible = false;
+
+		vm.render();
+
+		ajax.get('/nav?path=' + current.path, result => {
+
+			if (result.error) {
+
+				alert(result.error);
+
+				console.error(result.error);
+
+			} else {
+
+				current.children = result.dir;
+
+				manila.components.nav.render();
+
+			}
+
+		})
 
 	};
 

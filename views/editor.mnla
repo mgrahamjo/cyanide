@@ -2,4 +2,4 @@
 	<i class="loader visible"></i>
 <:}:>
 
-<textarea class="text"><::text::></textarea>
+<textarea class="text" autofocus><::text::></textarea>

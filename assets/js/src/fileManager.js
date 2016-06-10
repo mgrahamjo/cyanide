@@ -4,7 +4,7 @@ let openFiles = {};
 
 function open(file) {
 
-	manila.components.editor.update(file.path);
+	manila.components.editor.update(file.path, true);
 
 	manila.components.nav.update(file.path, true);
 
@@ -16,9 +16,19 @@ function open(file) {
 
 function close(file) {
 
+	let cm = document.querySelector('.CodeMirror');
+
+	cm = cm ? cm.CodeMirror : cm;
+
+	if ((cm && !cm.isClean()) && !confirm(`Discard usaved changes to ${file.path}?`)) {
+
+		return;
+
+	}
+
 	let openList;
 
-	manila.components.editor.close(file.path);
+	manila.components.editor.update(file.path, false);
 
 	manila.components.nav.update(file.path, false);
 	

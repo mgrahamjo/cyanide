@@ -1,6 +1,8 @@
 // CodeMirror dependencies
 require('codemirror/addon/comment/comment');
+require('codemirror/addon/search/search');
 require('codemirror/addon/search/searchcursor');
+require('codemirror/addon/dialog/dialog');
 require('codemirror/keymap/sublime');
 require('codemirror/mode/css/css');
 require('codemirror/mode/htmlmixed/htmlmixed');

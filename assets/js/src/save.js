@@ -9,6 +9,8 @@ export function save() {
 
 	if (file) {
 
+		let cm = document.querySelector('.CodeMirror').CodeMirror;
+
 		bg.classList.add('blur');
 
 		ajax.post(
@@ -16,7 +18,7 @@ export function save() {
 			'/save?file=' + file,
 
 			{
-				data: document.querySelector('.CodeMirror').CodeMirror.getValue()
+				data: cm.getValue()
 			},
 
 			result => {
@@ -30,6 +32,8 @@ export function save() {
 				} else {
 
 					bg.classList.remove('blur');
+
+					cm.markClean();
 
 				}
 
