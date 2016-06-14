@@ -63,7 +63,7 @@ function handleInput(err, result) {
 }
 
 
-fs.readFile(path + '/config.json', (err, json) => {
+fs.readFile(path + '/node_modules/config.json', (err, json) => {
 
 	config = JSON.parse(json);
 

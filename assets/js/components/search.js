@@ -16,13 +16,23 @@ manila.component('search', vm => {
 
 		}
 
-		req = ajax.get(`/search?term=${e.target.value}`, results => {
-		
-			manila.components.nav.showSearchResults(results);
+		if (e.target.value !== '') {
+
+			req = ajax.get(`/search?term=${e.target.value}`, results => {
+			
+				manila.components.nav.showSearchResults(results);
+
+				document.querySelector('.search-loader').classList.remove('visible');
+
+			});
+
+		} else {
+
+			vm.close(e);
 
 			document.querySelector('.search-loader').classList.remove('visible');
 
-		});
+		}
 		
 	}
 

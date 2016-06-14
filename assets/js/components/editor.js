@@ -23,11 +23,15 @@ manila.component('editor', vm => {
 
 			loadMode(extension).then(mode => {
 
-				editor = CodeMirror.fromTextArea(document.querySelector('.text'), {
+				editor = CodeMirror(el => {
+					let txt = document.querySelector('.text');
+					txt.parentNode.replaceChild(el, txt);
+				}, {
 					theme: 'monokai',
 				 	lineNumbers: true,
 				 	mode: mode,
 				 	keyMap: 'sublime',
+				 	value: text,
 				 	extraKeys: {
 				 		'Cmd-S': save,
 				 		'Ctrl-S': save
