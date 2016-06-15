@@ -32,6 +32,9 @@ manila.component('editor', vm => {
 				 	mode: mode,
 				 	keyMap: 'sublime',
 				 	value: text,
+				 	matchBrackets: true,
+				 	autoCloseBrackets: true,
+				 	matchTags: true,
 				 	extraKeys: {
 				 		'Cmd-S': save,
 				 		'Ctrl-S': save
