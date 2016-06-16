@@ -1,5 +1,3 @@
 <:if (loading) {:>
 	<i class="loader visible"></i>
 <:}:>
-
-<textarea class="text" autofocus><::text::></textarea>

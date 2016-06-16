@@ -13,25 +13,25 @@ manila.component('editor', vm => {
 
 	function showText(text, extension) {
 
-		vm.text = text;
-
 		vm.loading = false;
 
 		vm.render();
 
-		if (extension) {
+		loadMode(extension).then(mode => {
 
-			loadMode(extension).then(mode => {
+			if (editor) {
 
-				editor = CodeMirror(el => {
-					let txt = document.querySelector('.text');
-					txt.parentNode.replaceChild(el, txt);
-				}, {
+				editor.setOption('mode', mode);
+
+				editor.setValue(text);
+
+			} else {
+
+				editor = CodeMirror.fromTextArea(document.querySelector('.text'), {
 					theme: 'monokai',
 				 	lineNumbers: true,
 				 	mode: mode,
 				 	keyMap: 'sublime',
-				 	value: text,
 				 	matchBrackets: true,
 				 	autoCloseBrackets: true,
 				 	matchTags: true,
@@ -41,11 +41,11 @@ manila.component('editor', vm => {
 				 	}
 				});
 
-			});
+				editor.setValue(text);
 
-		}
+			}
 
-
+		});
 
 	}
 
@@ -55,13 +55,14 @@ manila.component('editor', vm => {
 
 			if (!opening) {
 
-				showText('');
+				if (openFiles[path].clean || confirm(`Discard usaved changes to ${path}?`)) {
 
-				delete openFiles[path];
+					showText('');
 
-				if (editor) {
+					delete openFiles[path];
 
-					editor.setValue('');
+					// return true to pass confirmation to other components via fileManager
+					return true;
 
 				}
 
@@ -71,11 +72,12 @@ manila.component('editor', vm => {
 
 				extension = extension[extension.length - 1];
 
-				showText('');
+				if (currentPath) {
 
-				if (currentPath && editor) {
-
-					openFiles[currentPath] = editor.getValue();
+					openFiles[currentPath] = {
+						value: editor.getValue(),
+						clean: editor.isClean()
+					};
 
 				}
 
@@ -83,15 +85,22 @@ manila.component('editor', vm => {
 
 				if (openFiles[path]) {
 
-					showText(openFiles[path], extension);
+					showText(openFiles[path].value, extension);
 
 				} else {
+
+					showText('');
 
 					vm.loading = true;
 
 					ajax.get('/open?file=' + path, data => {
 
 						showText(data.data, extension);
+
+						openFiles[currentPath] = {
+							value: data.data,
+							clean: true
+						};
 
 					});
 
