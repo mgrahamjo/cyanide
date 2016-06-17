@@ -2,7 +2,7 @@
 
 CyanIDE is a basic Sublime-like interface for editing files on a remote linux server. 
 
-![CyanIDE Screenshot](https://github.com/mgrahamjo/cyanide/lib/screenshot.png)
+![CyanIDE Screenshot](https://raw.githubusercontent.com/mgrahamjo/cyanide/master/lib/screenshot.png)
 
 ## Installation
 
@@ -37,7 +37,7 @@ Save your connection settings in config.json:
 
 ## Running the app
 
-Double-click the CyanIDE app - (on Windows, this is CyanIDE.cmd).
+Double-click the CyanIDE app for your platform (there's one for Windows and one for Mac).
 
 You will be prompted for the password to your RSA key. The first time you run the app it will take a few moments to run `npm install` before starting up.
 
