@@ -1,6 +1,6 @@
 {
   "name": "cyanide",
-  "version": "0.0.15",
+  "version": "0.1.0",
   "description": "A web-based IDE for editing files on a remote host",
   "main": "index.js",
   "scripts": {

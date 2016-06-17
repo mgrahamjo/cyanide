@@ -1,14 +1,24 @@
 # CyanIDE
 
-CyanIDE is a simple web interface for editing files on a remote linux server. It's like a friendly alternative to Vim, Emacs, or mounted filesystems.
+CyanIDE is a basic Sublime-like interface for editing files on a remote linux server. 
+
+![CyanIDE Screenshot](https://github.com/mgrahamjo/cyanide/lib/screenshot.png)
 
 ## Installation
+
+First, make sure Node.js version 4 or later is installed on your system:
+
+```
+node -v
+```
+
+Then clone the project:
 
 ```
 git clone https://github.com/mgrahamjo/cyanide
 ```
 
-CyanIDE requires Node.js to be installed.
+On Windows, you will get an error: `Invalid path: 'CyanIDE.app/Icon'`. No worries, that's a Mac-only path.
 
 ## Setup
 
@@ -27,9 +37,7 @@ Save your connection settings in config.json:
 
 ## Running the app
 
-On Mac, open the CyanIDE app.
-
-On Windows, double-click `CyanIDE.cmd`.
+Double-click the CyanIDE app - (on Windows, this is CyanIDE.cmd).
 
 You will be prompted for the password to your RSA key. The first time you run the app it will take a few moments to run `npm install` before starting up.
 

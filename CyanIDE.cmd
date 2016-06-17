@@ -19,4 +19,10 @@ IF ERRORLEVEL 1 (
 
     node .
 
+    IF ERRORLEVEL 1 (
+	
+		pause
+		
+	)
+
 )
